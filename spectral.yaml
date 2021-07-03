@@ -12,8 +12,11 @@ rules:
 
   # https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#172-casing
   ms-property-names-convention:
-    message: "Property is not named in lower camel case: {{path}}, {{property}}"
+    message: "Property name is not lower camel case: {{property}}"
     severity: error
+    # This rule can report false positives if run on the resolved spec.
+    # Issue: https://github.com/stoplightio/spectral/issues/1316
+    resolved: false
     given: $..[?(@.type === 'object' && @.properties)].properties.*~
     then:
       function: casing
@@ -52,7 +55,7 @@ rules:
       field: headers.Operation-location
       function: truthy
 
-  # ensure major version is in path
+  # Azure versioning policy is to use query parameter not path segment to specify version
   azure-version-policy:
     description: 'Enforce the Azure versioning policy'
     message: "{{error}}"
