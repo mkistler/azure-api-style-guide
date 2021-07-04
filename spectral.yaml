@@ -2,6 +2,7 @@ extends: spectral:oas
 functionsDir: './functions'
 functions:
   - check-version
+  - error-response
 rules:
   info-contact: off
   openapi-tags: off
@@ -55,9 +56,19 @@ rules:
       field: headers.Operation-location
       function: truthy
 
+  az-error-response:
+    description: Verify that error response conforms to Microsoft Azure API Guidelines.
+    message: "{{error}}"
+    given: $.paths[*][*].responses
+    severity: warn
+    formats: ["oas2"]
+    resolved: true
+    then:
+      function: error-response
+
   # Azure versioning policy is to use query parameter not path segment to specify version
-  azure-version-policy:
-    description: 'Enforce the Azure versioning policy'
+  az-version-policy:
+    description: Enforce the Azure versioning policy
     message: "{{error}}"
     formats: ["oas2"]
     given: $
