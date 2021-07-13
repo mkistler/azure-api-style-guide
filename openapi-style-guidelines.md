@@ -15,15 +15,15 @@
 <!-- toc -->
 
 - [Introduction](#introduction)
-- [Models](#models)
-  * [Model names](#model-names)
-  * [Combine models when practical](#combine-models-when-practical)
+- [Schemas](#schemas)
+  * [Schema names](#schema-names)
+  * [Combine schemas when practical](#combine-schemas-when-practical)
   * [Descriptions](#descriptions)
   * [Use well-defined property types](#use-well-defined-property-types)
   * [Avoid reserved words](#avoid-reserved-words)
   * [Proper use of required](#proper-use-of-required)
   * [Order of properties](#order-of-properties)
-  * [Order of properties in body parameter models](#order-of-properties-in-body-parameter-models)
+  * [Order of properties in body parameter schemas](#order-of-properties-in-body-parameter-schemas)
   * [Sibling elements for refs](#sibling-elements-for-refs)
   * [Use of discriminator field](#use-of-discriminator-field)
 - [Operations](#operations)
@@ -39,7 +39,7 @@
   * [Do not explicitly define an `authorization` header parameter](#do-not-explicitly-define-an-authorization-header-parameter)
   * [Do not explicitly define a `content-type` header parameter](#do-not-explicitly-define-a-content-type-header-parameter)
   * [Do not explicitly define a `accept-type` header parameter](#do-not-explicitly-define-a-accept-type-header-parameter)
-  * [Models for optional body parameters](#models-for-optional-body-parameters)
+  * [Schemas for optional body parameters](#schemas-for-optional-body-parameters)
 - [Conventions / Annotations for SDK generation](#-conventions--annotations-for-sdk-generation)
 
 <!-- tocstop -->
@@ -53,16 +53,20 @@ Of course, all OpenAPI documents should conform to the [OpenAPI specification](h
 
 In addition, Azure services should adhere to the [Microsoft Azure HTTP/REST API Guidelines](https://github.com/microsoft/api-guidelines/blob/azureRestUpdates/azure/Guidelines.md).
 
-The guidelines in this document extend and/or clarify the OpenAPI specification and API guidelines
+The guidelines in this document extend and/or clarify the OpenAPI specification and Azure API Guidelines
 to address aspects of API description related to the generation of client libraries
 suitable for distribution in a Software Development Kit (SDK).
 
-## Models
+## Schemas
 
-### Model names
+OpenAPI uses JSON Schema as the means for describing request and response body payloads.
 
-Model names should be simple, descriptive, and meaningful to developers.
-Model names should be in ["upper camel case"](https://en.wikipedia.org/wiki/Camel_case).
+### Schema names
+
+Schemas that appear in the `definitions` or `components.schemas` section of an API definition are
+referenced by their key in this section, or the "schema name".
+Schema names should be simple, descriptive, and meaningful to developers.
+Schema names should be in ["upper camel case"](https://en.wikipedia.org/wiki/Camel_case).
 
 Good:
 
@@ -74,19 +78,19 @@ Bad:
 * `TraitTreeNode`
 * `GetClassifiersTopLevelBrief`
 
-### Combine models when practical
+### Combine schemas when practical
 
-Use a single model to describe similar, compatible objects when practical.
+Use a single schema to describe similar, compatible objects when practical.
 For example, if a "Foo" has 8 properties and a "FooPlus" has the same 8 properties as "Foo" but also two more,
-it is usually preferable to combine these two models by adding the two additional properties from "FooPlus"
+it is usually preferable to combine these two schemas by adding the two additional properties from "FooPlus"
 into "Foo" as optional properties.
 
 ### Descriptions
 
-Every model and property should have a description.
+Every schema and property should have a description.
 These descriptions should match the API Reference descriptions wherever practical.
-Avoid describing a model as a "JSON object" since this will be incorrect for some SDKs.
-Rather, use the generic "object" in model descriptions.
+Avoid describing a schema as a "JSON object" since this will be incorrect in some SDKs.
+Rather, use the generic "object" in schema descriptions.
 
 Good:
 
@@ -98,7 +102,7 @@ Bad:
 
 ### Use well-defined property types
 
-Model properties and parameters should have well-defined type and format information.
+schema properties and parameters should have well-defined type and format information.
 Only use combinations of `type` and `format` defined in the
 [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#dataTypes)
 
@@ -124,36 +128,29 @@ The standard tools do not warn about this because the OpenAPI spec does not rest
 
 ### Avoid reserved words
 
-Avoid using reserved words for model/property names (for example, `error`, `return`, `type`, `input`).
+Avoid using reserved words for schema/property names (for example, `error`, `return`, `type`, `input`).
 See [Alternate names for properties or parameters](#alternate-names-for-properties-or-parameters) below
 for a way to deal with existing properties whose names are reserved words.
 
 ### Proper use of required
 
-Mark a property as "required" if and only if it will be present *and not null* for every instance of the model.
+Mark a property as "required" if and only if it will be present *and not null* for every instance of the schema.
 
 ### Order of properties
 
-The properties in a model definition should appear in the same order they should appear in the SDK.
+The properties in a schema definition should appear in the same order they should appear in the SDK.
 Typically important or fundamental properties should be listed first and ancillary properties appearing last.
-For example, if a model has an "id" property that uniquely identifies an instance of the model, that should generally appear earlier in the list of properties.
-As a corollary, required properties should generally appear before optional properties in the model definition.
-
-### Order of properties in body parameter models
-
-Models that represent body parameters may be absorbed into the parameter list for the method for the request, so additional care is needed in defining these model:
-
-- List all required properties before any optional properties.
-- Add new optional properties to the *end* of the property list.
+For example, if a schema has an "id" property that uniquely identifies an instance of the schema, that should generally appear earlier in the list of properties.
+As a corollary, required properties should generally appear before optional properties in the schema definition.
 
 ### Sibling elements for refs
 
-The JSON Schema specification (an underlying element of the OpenAPI specification) does not allow "sibling" elements to a $ref.
-This means that a property defined with a $ref cannot be given an alternate description (or any other attribute).
+The JSON Schema specification does not allow "sibling" elements to a $ref -- the behavior of such elements is "undefined".
+But the Azure tooling explicitly allows certain elements as siblings of $ref, including `description`.
 
 ### Use of discriminator field
 
-The `discriminator` field of a model can be used to create a polymorphic relationship between models. The `discriminator` should be specified on the superclass, although the value doesn't actually affect the relationship. The subclasses should use the `allOf` property to reference the superclass and define any additional properties.
+The `discriminator` field of a schema can be used to create a polymorphic relationship between schemas. The `discriminator` should be specified on the superclass, although the value doesn't actually affect the relationship. The subclasses should use the `allOf` property to reference the superclass and define any additional properties.
 
 Example:
 
@@ -226,12 +223,12 @@ For SDK generation, `operationId`s are used as the name of the method correspond
 
 The `operationId` should be specific and descriptive. Here is the recommended convention:
 
-- GET a single `Model`: `getModel`
-- GET a list of `Model`: `listModels`
-- POST a new `Model`: `createModel` or `addModel`
-- POST a partial update to a `Model`: `updateModel`
-- PUT a complete replacement to a `Model`: `replaceModel`
-- DELETE a `Model`: `deleteModel`
+- GET a single `Resource`: `getResource`
+- GET a list of `Resource`: `listResources`
+- POST a new `Resource`: `createResource` or `addResource`
+- POST a partial update to a `Resource`: `updateResource`
+- PUT a complete replacement to a `Resource`: `replaceResource`
+- DELETE a `Resource`: `deleteResource`
 
 ### Explicitly specify consumes type(s)
 
@@ -327,7 +324,7 @@ OpenAPI 3.0 requires that an "accept" header parameter, if specified, must be ig
 [[ref](https://github.com/OAI/OpenAPI-Specification/blob/3.0.3/versions/3.0.3.md#fixed-fields-10)].
 
 
-### Models for optional body parameters
+### Schemas for optional body parameters
 
 Don't specify required properties in the schema of an optional body parameter.
 This is ambiguous and can lead to incorrect implementation on the client or server.
