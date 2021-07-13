@@ -2,7 +2,7 @@
   "name": "azure-spectral-ruleset",
   "version": "0.0.1",
   "description": "Spectral rules for Azure API Guidelines",
-  "main": "index.js",
+  "main": "spectral.yaml",
   "scripts": {
     "lint": "eslint --cache --quiet --ext '.js' functions",
     "lint-fix": "eslint --cache --quiet --ext '.js' --fix functions",
