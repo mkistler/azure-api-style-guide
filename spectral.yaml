@@ -13,6 +13,7 @@ rules:
 
   # https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#172-casing
   ms-property-names-convention:
+    description: Property names should be lowerCamelCase.
     message: "Property name is not lower camel case: {{property}}"
     severity: error
     # This rule can report false positives if run on the resolved spec.
@@ -27,7 +28,7 @@ rules:
   # All success responses except 202 & 204 should define a response body
   # ref: https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#1321-put
   ms-success-response-body:
-    description: All success responses except 202 & 204 should define a response body
+    description: All success responses except 202 & 204 should define a response body.
     given: $.paths[*][*].responses[?(@property >= 200 && @property < 300 && @property != '202' && @property != '204')]
     severity: warn
     formats: ["oas2"]
@@ -37,7 +38,7 @@ rules:
       function: truthy
 
   ms-success-response-nobody:
-    description: Responses for status codes 202 and 204 should have no response body
+    description: Responses for status codes 202 and 204 should have no response body.
     given: $.paths[*][*].responses[?(@property == '202' || @property == '204')]
     severity: warn
     formats: ["oas2"]
@@ -47,7 +48,7 @@ rules:
       function: falsy
 
   ms-lro-headers:
-    description: A 202 response should include an Operation-Location response header
+    description: A 202 response should include an Operation-Location response header.
     given: $.paths[*][*].responses[?(@property == '202')]
     severity: warn
     formats: ["oas2"]
@@ -57,7 +58,7 @@ rules:
       function: truthy
 
   az-error-response:
-    description: Verify that error response conforms to Microsoft Azure API Guidelines.
+    description: Error response body should conform to Microsoft Azure API Guidelines.
     message: "{{error}}"
     given: $.paths[*][*].responses
     severity: warn
@@ -68,7 +69,7 @@ rules:
 
   # Azure versioning policy is to use query parameter not path segment to specify version
   az-version-policy:
-    description: Enforce the Azure versioning policy
+    description: API version should not be specified in path segment.
     message: "{{error}}"
     formats: ["oas2"]
     given: $
