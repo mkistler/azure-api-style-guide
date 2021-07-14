@@ -66,6 +66,7 @@ OpenAPI uses JSON Schema as the means for describing request and response body p
 Schemas that appear in the `definitions` or `components.schemas` section of an API definition are
 referenced by their key in this section, or the "schema name".
 Schema names should be simple, descriptive, and meaningful to developers.
+Avoid "throwaway" words in schema names like "Request", "Response", "Payload", "Object", etc.
 Schema names should be in ["upper camel case"](https://en.wikipedia.org/wiki/Camel_case).
 
 Good:
@@ -102,7 +103,7 @@ Bad:
 
 ### Use well-defined property types
 
-schema properties and parameters should have well-defined type and format information.
+Schema properties and parameters should have well-defined type and format information.
 Only use combinations of `type` and `format` defined in the
 [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#dataTypes)
 

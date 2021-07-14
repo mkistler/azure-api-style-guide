@@ -8,11 +8,7 @@ function getVersion(path) {
   return segments.find((segment) => segment.match(/v[0-9]+(.[0-9]+)?/));
 }
 
-module.exports = (targetVal) => {
-  if (targetVal === null || typeof targetVal !== 'object') {
-    return [];
-  }
-
+function checkPaths(targetVal) {
   const oas2 = targetVal.swagger;
 
   if (oas2) {
@@ -35,7 +31,6 @@ module.exports = (targetVal) => {
   if (paths && typeof paths === 'object') {
     Object.keys(paths).forEach((path) => {
       const version = getVersion(path);
-      console.log(path);
       if (version) {
         errors.push({
           message: `Version segment "${version}" in path violates Azure versioning policy`,
@@ -44,5 +39,56 @@ module.exports = (targetVal) => {
       }
     });
   }
+  return errors;
+};
+
+function findVersionParam(params) {
+  if (params && Array.isArray(params)) {
+    return params.filter(
+      (elem) => (elem.name === 'api-version' && elem.in === 'query')
+    ).shift();
+  }
+  return undefined;
+}
+
+// Verify that every operation defines a query param called `api_version`
+function checkVersionParam(targetVal) {
+  const { paths } = targetVal;
+  const errors = [];
+  if (paths && typeof paths === 'object') {
+    Object.keys(paths).forEach((path) => {
+      // Parameters can be defined at the path level.
+      if (paths[path].parameters && Array.isArray(paths[path].parameters)) {
+        const versionParam = findVersionParam(paths[path].parameters);
+        if (versionParam) {
+          return;
+        }
+      }
+
+      ['get', 'post', 'put', 'patch', 'delete'].forEach((method) => {
+        if (paths[path][method]) {
+          const versionParam = findVersionParam(paths[path][method].parameters);
+          if (!versionParam) {
+            errors.push({
+              message: `Operation ${method} of path ${path} does not define an "api_version" query parameter`,
+              path: ['paths', path, method, 'parameters'],
+            });
+          }
+        }
+      });
+    });
+  }
+
+  return errors;
+}
+
+module.exports = (targetVal) => {
+  if (targetVal === null || typeof targetVal !== 'object') {
+    return [];
+  }
+
+  let errors = checkPaths(targetVal);
+  errors = errors.concat(checkVersionParam(targetVal));
+
   return errors;
 };
