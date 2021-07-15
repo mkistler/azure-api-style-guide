@@ -51,6 +51,26 @@ function findVersionParam(params) {
   return undefined;
 }
 
+// Verify version parameter has certain characteristics:
+// - it is required
+// - if it has a default value, it has the form YYYY-MM-DD
+function validateVersionParam(param, path) {
+  const errors = [];
+  if (!param.required) {
+    errors.push({
+      message: `"api-version" should be a required parameter`,
+      path,
+    });
+  }
+  if (param.default && !param.default.match(/^\d\d\d\d-\d\d-\d\d$/)) {
+    errors.push({
+      message: `Default value for "api-version" should be a date in YYYY-MM-DD format`,
+      path: [...path, 'default'],
+    });
+  }
+  return errors;
+}
+
 // Verify that every operation defines a query param called `api_version`
 function checkVersionParam(targetVal) {
   const { paths } = targetVal;
@@ -61,6 +81,8 @@ function checkVersionParam(targetVal) {
       if (paths[path].parameters && Array.isArray(paths[path].parameters)) {
         const versionParam = findVersionParam(paths[path].parameters);
         if (versionParam) {
+          const index = paths[path].parameters.indexOf(versionParam);
+          errors.push(...validateVersionParam(versionParam, ['paths', path, 'parameters', index.toString()]));
           return;
         }
       }
@@ -68,7 +90,10 @@ function checkVersionParam(targetVal) {
       ['get', 'post', 'put', 'patch', 'delete'].forEach((method) => {
         if (paths[path][method]) {
           const versionParam = findVersionParam(paths[path][method].parameters);
-          if (!versionParam) {
+          if (versionParam) {
+            const index = paths[path][method].parameters.indexOf(versionParam);
+            errors.push(...validateVersionParam(versionParam, ['paths', path, method, 'parameters', index]));
+          } else {
             errors.push({
               message: `Operation ${method} of path ${path} does not define an "api_version" query parameter`,
               path: ['paths', path, method, 'parameters'],
@@ -87,8 +112,8 @@ module.exports = (targetVal) => {
     return [];
   }
 
-  let errors = checkPaths(targetVal);
-  errors = errors.concat(checkVersionParam(targetVal));
+  const errors = checkPaths(targetVal);
+  errors.push(...checkVersionParam(targetVal));
 
   return errors;
 };
