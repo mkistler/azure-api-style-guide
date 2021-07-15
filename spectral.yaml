@@ -78,9 +78,8 @@ rules:
     then:
       function: error-response
 
-  # Azure versioning policy is to use query parameter not path segment to specify version
   az-version-policy:
-    description: API version should not be specified in path segment.
+    description: Specify API version using `api-version` query parameter, not in path.
     message: "{{error}}"
     formats: ["oas2"]
     given: $
@@ -88,3 +87,12 @@ rules:
     then:
       function: check-version
 
+  az-version-convention:
+    description: API version should be a date in YYYY-MM-DD format, optionally suffixed with '-preview'
+    formats: ["oas2", "oas3"]
+    given: $.info.version
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match:  "^\\d\\d\\d\\d-\\d\\d-\\d\\d(-preview)?$"
