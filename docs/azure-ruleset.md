@@ -11,6 +11,10 @@ the [Azure OpenAPI Style Guidelines](./openapi-style-guidelines.md).
 
 Property names should be lowerCamelCase.
 
+### ms-parameter-names-convention
+
+Query parameter names should be lowerCamelCase; header parameter names should be kebab case.
+
 ### ms-success-response-body
 
 All success responses except 202 & 204 should define a response body.

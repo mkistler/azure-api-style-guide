@@ -3,6 +3,7 @@ functionsDir: './functions'
 functions:
   - check-version
   - error-response
+  - param-names
 rules:
   info-contact: off
   openapi-tags: off
@@ -15,7 +16,7 @@ rules:
   ms-property-names-convention:
     description: Property names should be lowerCamelCase.
     message: "Property name is not lower camel case: {{property}}"
-    severity: error
+    severity: warn
     # This rule can report false positives if run on the resolved spec.
     # Issue: https://github.com/stoplightio/spectral/issues/1316
     resolved: false
@@ -25,10 +26,19 @@ rules:
       functionOptions:
         type: camel
 
+  # https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#172-casing
+  ms-parameter-names-convention:
+    description: Parameter names should conform to Azure naming conventions.
+    message: "{{error}}"
+    severity: warn
+    given: $.paths.*[?( @property === 'get' || @property === 'put' || @property === 'post' || @property === 'delete' || @property === 'options' || @property === 'head' || @property === 'patch' || @property === 'trace' )].parameters.*
+    then:
+      function: param-names
+
   ms-schema-names-convention:
     description: Schema names should be UpperCamelCase.
     message: "Schema name is not upper camel case: {{property}}"
-    severity: error
+    severity: warn
     formats: ["oas2"]
     given: $.definitions.*~
     then:
