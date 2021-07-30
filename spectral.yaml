@@ -107,6 +107,18 @@ rules:
       functionOptions:
         match: "^\\d\\d\\d\\d-\\d\\d-\\d\\d(-preview)?$"
 
+  # Patch request body content type should be application/merge-patch+json
+  az-patch-content-type:
+    description: The request body content type for patch operations should be JSON merge patch
+    formats: ["oas2"]
+    given: $.paths.*.patch.consumes[*]
+    severity: warn
+    then:
+      function: enumeration
+      functionOptions:
+        values:
+        - application/merge-patch+json
+
   # YOU SHOULD limit your URL's characters to 0-9 A-Z a-z - . _ ~
   ms-path-characters:
     description: Check for recommended URL characters

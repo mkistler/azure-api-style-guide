@@ -34,3 +34,7 @@ Error response body should conform to Microsoft Azure API Guidelines.
 ### az-version-policy
 
 API version should not be specified in path segment.
+
+### az-patch-content-type
+
+The request body content type for patch operations should be JSON merge patch.
