@@ -58,13 +58,13 @@ function validateVersionParam(param, path) {
   const errors = [];
   if (!param.required) {
     errors.push({
-      message: `"api-version" should be a required parameter`,
+      message: '"api-version" should be a required parameter',
       path,
     });
   }
   if (param.default && !param.default.match(/^\d\d\d\d-\d\d-\d\d$/)) {
     errors.push({
-      message: `Default value for "api-version" should be a date in YYYY-MM-DD format`,
+      message: 'Default value for "api-version" should be a date in YYYY-MM-DD format',
       path: [...path, 'default'],
     });
   }

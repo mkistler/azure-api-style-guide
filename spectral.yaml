@@ -14,8 +14,8 @@ rules:
 
   # https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#172-casing
   ms-property-names-convention:
-    description: Property names should be lowerCamelCase.
-    message: "Property name is not lower camel case: {{property}}"
+    description: Property names should be lower camel case.
+    message: "Property name {{property}} should be lower camel case"
     severity: warn
     # This rule can report false positives if run on the resolved spec.
     # Issue: https://github.com/stoplightio/spectral/issues/1316
@@ -37,7 +37,7 @@ rules:
 
   ms-schema-names-convention:
     description: Schema names should be UpperCamelCase.
-    message: "Schema name is not upper camel case: {{property}}"
+    message: "Schema name {{property}} should be upper camel case"
     severity: warn
     formats: ["oas2"]
     given: $.definitions.*~
@@ -105,4 +105,16 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match:  "^\\d\\d\\d\\d-\\d\\d-\\d\\d(-preview)?$"
+        match: "^\\d\\d\\d\\d-\\d\\d-\\d\\d(-preview)?$"
+
+  # YOU SHOULD limit your URL's characters to 0-9 A-Z a-z - . _ ~
+  ms-path-characters:
+    description: Check for recommended URL characters
+    message: "Path {{property}} contains non-recommended characters"
+    formats: ["oas2", "oas3"]
+    given: $.paths.*~
+    severity: info
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[/0-9A-Za-z._~-]*$"
