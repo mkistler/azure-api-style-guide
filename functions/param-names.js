@@ -19,7 +19,7 @@ module.exports = (targetVal, _opts, paths) => {
     if (!targetVal.name.match(/^[a-z][a-z0-9]*([A-Z][a-z0-9]+)*$/)) {
       return [
         {
-          message: `query parameter name "${targetVal.name}" should be lower camel case`,
+          message: `query parameter name "${targetVal.name}" should be lower camel case.`,
           path: [...path, 'name'],
         },
       ];
@@ -28,7 +28,7 @@ module.exports = (targetVal, _opts, paths) => {
     if (!targetVal.name.match(/^[A-Za-z][a-z0-9]*(-[A-Za-z][a-z0-9]*)*$/)) {
       return [
         {
-          message: `header parameter name "${targetVal.name}" should be kebab case`,
+          message: `header parameter name "${targetVal.name}" should be kebab case.`,
           path: [...path, 'name'],
         },
       ];

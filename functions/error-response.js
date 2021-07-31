@@ -25,7 +25,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   // The error response MUST be a single JSON object.
   if (!errorResponseSchema.properties) {
     errors.push({
-      message: 'Error response schema must be an object',
+      message: 'Error response schema must be an object.',
       path: pathToSchema,
     });
     return errors;
@@ -33,7 +33,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   // This object MUST have a name/value pair named "error." The value MUST be a JSON object.
   if (!errorResponseSchema.properties.error || !errorResponseSchema.properties.error.properties) {
     errors.push({
-      message: 'Error response schema contain an object property named `error`',
+      message: 'Error response schema contain an object property named `error`.',
       path: pathToSchema,
     });
     return errors;
@@ -44,24 +44,24 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
 
   if (!errorSchema.properties.code || !errorSchema.properties.code.type === 'string') {
     errors.push({
-      message: 'Error schema should contain `code` field with type `string`',
+      message: 'Error schema should contain `code` field with type `string`.',
       path: [...pathToSchema, 'properties', 'code'],
     });
   } else if (!errorSchemaRequired.includes('code')) {
     errors.push({
-      message: 'The `code` property of the error schema should be required',
+      message: 'The `code` property of the error schema should be required.',
       path: [...pathToSchema, 'required'],
     });
   }
 
   if (!errorSchema.properties.message || !errorSchema.properties.message.type === 'string') {
     errors.push({
-      message: 'Error schema should contain `message` field with type `string`',
+      message: 'Error schema should contain `message` field with type `string`.',
       path: [...pathToSchema, 'properties', 'message'],
     });
   } else if (!errorSchemaRequired.includes('message')) {
     errors.push({
-      message: 'The `message` property of the error schema should be required',
+      message: 'The `message` property of the error schema should be required.',
       path: [...pathToSchema, 'required'],
     });
   }
@@ -69,7 +69,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   // The value for the "target" name/value pair is ... the name of the property in error
   if (!!errorSchema.properties.target && errorSchema.properties.target.type !== 'string') {
     errors.push({
-      message: 'The `target` property of the error schema should be type `string`',
+      message: 'The `target` property of the error schema should be type `string`.',
       path: [...pathToSchema, 'properties', 'target'],
     });
   }
@@ -77,7 +77,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   // The value for the "details" name/value pair MUST be an array of JSON objects
   if (!!errorSchema.properties.details && !isArraySchema(errorSchema.properties.details)) {
     errors.push({
-      message: 'The `details` property of the error schema should be an array',
+      message: 'The `details` property of the error schema should be an array.',
       path: [...pathToSchema, 'properties', 'details'],
     });
   }
@@ -85,7 +85,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   // The value for the "innererror" name/value pair MUST be an object
   if (!!errorSchema.properties.innererror && !isObjectSchema(errorSchema.properties.innererror)) {
     errors.push({
-      message: 'The `innererror` property of the error schema should be an object',
+      message: 'The `innererror` property of the error schema should be an object.',
       path: [...pathToSchema, 'properties', 'innererror'],
     });
   }
@@ -99,7 +99,7 @@ function validateErrorResponse(errorResponse, responsePath) {
   // The error response should contain x-ms-error-response: true
   if (!errorResponse['x-ms-error-response']) {
     errors.push({
-      message: 'Error response should contain x-ms-error-response',
+      message: 'Error response should contain x-ms-error-response.',
       path: responsePath,
     });
   }
@@ -107,7 +107,7 @@ function validateErrorResponse(errorResponse, responsePath) {
   // The error response schema should conform to Microsoft API Guidelines
   if (!errorResponse.schema) {
     errors.push({
-      message: 'Error response should have a schema',
+      message: 'Error response should have a schema.',
       path: responsePath,
     });
   } else {
@@ -119,7 +119,7 @@ function validateErrorResponse(errorResponse, responsePath) {
   // The error response should contain a x-ms-error header
   if (!errorResponse.headers || !errorResponse.headers['x-ms-error']) {
     errors.push({
-      message: 'Error response should contain a x-ms-error header',
+      message: 'Error response should contain a x-ms-error header.',
       path: !errorResponse.headers ? responsePath : [...responsePath, 'headers'],
     });
   }
@@ -134,7 +134,7 @@ module.exports = function (responses, _opts, paths) {
     .filter((code) => code.match(/[45]\d\d/) || (code === 'default' && !!responses.default['x-ms-error-response'] === true));
   if (errorResponses.length === 0) {
     errors.push({
-      message: 'No error response defined for operation',
+      message: 'No error response defined for operation.',
       path,
     });
   } else {

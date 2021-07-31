@@ -17,7 +17,7 @@ function checkPaths(targetVal) {
     if (version) {
       return [
         {
-          message: `Version segment "${version}" in basePath violates Azure versioning policy`,
+          message: `Version segment "${version}" in basePath violates Azure versioning policy.`,
           path: basePath,
         },
       ];
@@ -33,7 +33,7 @@ function checkPaths(targetVal) {
       const version = getVersion(path);
       if (version) {
         errors.push({
-          message: `Version segment "${version}" in path violates Azure versioning policy`,
+          message: `Version segment "${version}" in path violates Azure versioning policy.`,
           path: ['paths', path],
         });
       }
@@ -64,7 +64,7 @@ function validateVersionParam(param, path) {
   }
   if (param.default && !param.default.match(/^\d\d\d\d-\d\d-\d\d$/)) {
     errors.push({
-      message: 'Default value for "api-version" should be a date in YYYY-MM-DD format',
+      message: 'Default value for "api-version" should be a date in YYYY-MM-DD format.',
       path: [...path, 'default'],
     });
   }
@@ -95,7 +95,7 @@ function checkVersionParam(targetVal) {
             errors.push(...validateVersionParam(versionParam, ['paths', path, method, 'parameters', index]));
           } else {
             errors.push({
-              message: `Operation ${method} of path ${path} does not define an "api_version" query parameter`,
+              message: `Operation does not define an "api_version" query parameter.`,
               path: ['paths', path, method, 'parameters'],
             });
           }
