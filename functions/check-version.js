@@ -40,13 +40,12 @@ function checkPaths(targetVal) {
     });
   }
   return errors;
-};
+}
 
 function findVersionParam(params) {
+  const isApiVersion = (elem) => elem.name === 'api-version' && elem.in === 'query';
   if (params && Array.isArray(params)) {
-    return params.filter(
-      (elem) => (elem.name === 'api-version' && elem.in === 'query')
-    ).shift();
+    return params.filter(isApiVersion).shift();
   }
   return undefined;
 }
@@ -95,7 +94,7 @@ function checkVersionParam(targetVal) {
             errors.push(...validateVersionParam(versionParam, ['paths', path, method, 'parameters', index]));
           } else {
             errors.push({
-              message: `Operation does not define an "api_version" query parameter.`,
+              message: 'Operation does not define an "api_version" query parameter.',
               path: ['paths', path, method, 'parameters'],
             });
           }
@@ -107,6 +106,8 @@ function checkVersionParam(targetVal) {
   return errors;
 }
 
+// Check API definition to ensure conformance to Azure versioning guidelines.
+// @param targetVal - the entire API document
 module.exports = (targetVal) => {
   if (targetVal === null || typeof targetVal !== 'object') {
     return [];

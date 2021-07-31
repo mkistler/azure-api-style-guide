@@ -4,6 +4,7 @@ functions:
   - check-version
   - error-response
   - param-names
+  - unique-ignore-case
 rules:
   info-contact: off
   openapi-tags: off
@@ -31,7 +32,9 @@ rules:
     description: Parameter names should conform to Azure naming conventions.
     message: "{{error}}"
     severity: warn
-    given: $.paths.*[?( @property === 'get' || @property === 'put' || @property === 'post' || @property === 'delete' || @property === 'options' || @property === 'head' || @property === 'patch' || @property === 'trace' )].parameters.*
+    given:
+    - $.paths[*].parameters.*
+    - $.paths.*[?( @property === 'get' || @property === 'put' || @property === 'post' || @property === 'delete' || @property === 'options' || @property === 'head' || @property === 'patch' || @property === 'trace' )].parameters.*
     then:
       function: param-names
 
@@ -130,7 +133,7 @@ rules:
       field: '204'
       function: truthy
 
-  # YOU SHOULD limit your URL's characters to 0-9 A-Z a-z - . _ ~
+  # YOU SHOULD limit your URLs characters to 0-9 A-Z a-z - . _ ~
   ms-path-characters:
     description: Path should contain only recommended characters.
     message: Path contains non-recommended characters.
