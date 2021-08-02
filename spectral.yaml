@@ -143,4 +143,15 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^[/0-9A-Za-z._~-]*$"
+        # Check each path segment individually and ignore param segments
+        match: "^(/([0-9A-Za-z._~-]*|{[^}]*}))*$"
+
+  property-descriptions:
+    description: All schema properties should have descriptions.
+    message: Property should have description
+    severity: warn
+    resolved: false
+    given: $..[?(@.type === 'object' && @.properties)].properties[*]
+    then:
+      field: description
+      function: truthy
