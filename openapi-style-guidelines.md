@@ -137,13 +137,6 @@ for a way to deal with existing properties whose names are reserved words.
 
 Mark a property as "required" if and only if it will be present *and not null* for every instance of the schema.
 
-### Order of properties
-
-The properties in a schema definition should appear in the same order they should appear in the SDK.
-Typically important or fundamental properties should be listed first and ancillary properties appearing last.
-For example, if a schema has an "id" property that uniquely identifies an instance of the schema, that should generally appear earlier in the list of properties.
-As a corollary, required properties should generally appear before optional properties in the schema definition.
-
 ### Sibling elements for refs
 
 The JSON Schema specification does not allow "sibling" elements to a $ref -- the behavior of such elements is "undefined".
@@ -204,11 +197,6 @@ Using `discriminator` allows for the `Pet` class to show up as a `parent` proper
 <!-- --------------------------------------------------------------- -->
 
 ## Operations
-
-### Order of operations
-
-Define basic/common operations before advanced/rare operations.
-Typically this order should match the order of operations in the API Reference.
 
 ### Summary and description
 
@@ -286,14 +274,12 @@ create a named parameter in the parameters section of the OpenAPI doc and
 then use a `$ref` to reference the parameter definition from every operation
 that accepts this parameter.
 
-
 ### Specify common parameters for a path in the path definition
 
 Any parameter that appears on all operations of a particular path should be specified
 in the parameter list for the path rather than in the parameter list for each of
 the operations.
 This makes the API description more concise and easy to understand.
-
 
 ### Do not explicitly define an `authorization` header parameter
 
@@ -304,7 +290,6 @@ since it is implicitly specified by the [Security Requirement](https://github.co
 OpenAPI 3.0 requires that a "authorization" header parameter, if specified, must be ignored
 [[ref](https://github.com/OAI/OpenAPI-Specification/blob/3.0.3/versions/3.0.3.md#fixed-fields-10)].
 
-
 ### Do not explicitly define a `content-type` header parameter
 
 Operations that consume multiple content types often use a "content-type" header parameter to specify
@@ -314,7 +299,6 @@ since it is implicitly specified by a `consumes` setting with more than one valu
 OpenAPI 3.0 requires that a "content-type" header parameter, if specified, must be ignored
 [[ref](https://github.com/OAI/OpenAPI-Specification/blob/3.0.3/versions/3.0.3.md#fixed-fields-10)].
 
-
 ### Do not explicitly define a `accept-type` header parameter
 
 Operations that produce multiple content types often use an "accept-type" header parameter to specify
@@ -323,7 +307,6 @@ However, this header parameter should not be coded explicitly in the API definit
 since it is implicitly specified by a `produces` setting with more than one value.
 OpenAPI 3.0 requires that an "accept" header parameter, if specified, must be ignored
 [[ref](https://github.com/OAI/OpenAPI-Specification/blob/3.0.3/versions/3.0.3.md#fixed-fields-10)].
-
 
 ### Schemas for optional body parameters
 

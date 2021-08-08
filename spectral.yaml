@@ -15,7 +15,7 @@ rules:
   operation-tag-defined: off
 
   az-delete-204-response:
-    description: A delete operation should have a 204 response
+    description: A delete operation should have a 204 response.
     message: A delete operation should have a `204` response.
     given: $.paths[*].delete.responses
     severity: warn
@@ -61,7 +61,6 @@ rules:
     then:
       function: falsy
 
-  # https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#172-casing
   az-parameter-names-convention:
     description: Parameter names should conform to Azure naming conventions.
     message: "{{error}}"
@@ -120,6 +119,15 @@ rules:
       function: casing
       functionOptions:
         type: camel
+
+  az-required-default-response:
+    description: All operations should have a default (error) response.
+    message: Operation is missing a default response
+    severity: warn
+    given: $.paths.*.*.responses
+    then:
+      field: default
+      function: truthy
 
   az-schema-names-convention:
     description: Schema names should be UpperCamelCase.
