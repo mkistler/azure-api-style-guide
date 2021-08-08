@@ -54,7 +54,7 @@
 | [TrackedResourceListByImmediateParent][r3010] | R3010 |  |
 | [DescriptionMustNotBeNodeName][r3011] | R3011 | Add |
 | [APIVersionPattern][r3012] | R3012 | [az-version-convention](./azure-ruleset.md#az-version-convention) |
-| [DeleteMustNotHaveRequestBody][r3013] | R3013 | Add |
+| [DeleteMustNotHaveRequestBody][r3013] | R3013 | [az-request-body-not-allowed](./azure-ruleset.md#az-request-body-not-allowed) |
 | [BodyPropertiesNamesCamelCase][r3014] | R3014 | [az-property-names-convention](./azure-ruleset.md#az-property-names-convention) |
 | [EnumMustHaveType][r3015] | R3015 | Add |
 | [DefinitionsPropertiesNamesCamelCase][r3016] | R3016 | [az-property-names-convention](./azure-ruleset.md#az-property-names-convention) |

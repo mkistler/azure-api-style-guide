@@ -49,6 +49,14 @@ Property names should be lowerCamelCase.
 
 The request body content type for patch operations should be JSON merge patch.
 
+### az-request-body-not-allowed
+
+A get or delete operation must not accept a request body/body parameter.
+
+A requestBody/body parameter should only be specified for HTTP methods where
+the HTTP 1.1 specification [RFC7231][RFC7231] has explicitly defined semantics for request bodies.
+RFC7231 states that the payload for both get and delete "has no defined semantics".
+
 ### az-required-default-response
 
 All operations should have a default (error) response.
@@ -78,3 +86,5 @@ API version (`info.version`) should be a date in YYYY-MM-DD format, optionally s
 ### az-version-policy
 
 API version should not be specified in path segment, and all operations should accept `api-version` query param with date value.
+
+[RFC7231]: https://tools.ietf.org/html/rfc7231

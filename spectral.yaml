@@ -120,6 +120,18 @@ rules:
       functionOptions:
         type: camel
 
+  az-request-body-not-allowed:
+    description: A get or delete operation must not accept a body parameter.
+    severity: error
+    given:
+    - $.paths[*].get.parameters[*]
+    - $.paths[*].delete.parameters[*]
+    then:
+      field: in
+      function: pattern
+      functionOptions:
+        notMatch: "/^body$/"
+
   az-required-default-response:
     description: All operations should have a default (error) response.
     message: Operation is missing a default response
