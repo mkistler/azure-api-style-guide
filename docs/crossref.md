@@ -53,11 +53,11 @@
 | [CollectionObjectPropertiesNaming][r3008] | R3008 | Add |
 | [TrackedResourceListByImmediateParent][r3010] | R3010 |  |
 | [DescriptionMustNotBeNodeName][r3011] | R3011 | Add |
-| [APIVersionPattern][r3012] | R3012 | Done |
+| [APIVersionPattern][r3012] | R3012 | [az-version-convention](./azure-ruleset.md#az-version-convention) |
 | [DeleteMustNotHaveRequestBody][r3013] | R3013 | Add |
-| [BodyPropertiesNamesCamelCase][r3014] | R3014 | Done |
+| [BodyPropertiesNamesCamelCase][r3014] | R3014 | [az-property-names-convention](./azure-ruleset.md#az-property-names-convention) |
 | [EnumMustHaveType][r3015] | R3015 | Add |
-| [DefinitionsPropertiesNamesCamelCase][r3016] | R3016 | Done |
+| [DefinitionsPropertiesNamesCamelCase][r3016] | R3016 | [az-property-names-convention](./azure-ruleset.md#az-property-names-convention) |
 | [GuidUsage][r3017] | R3017 |  |
 | [EnumInsteadOfBoolean][r3018] | R3018 |  |
 | [ARMResourcePropertiesBag][r3019] | R3019 |  |
@@ -82,7 +82,7 @@
 | [AvoidEmptyResponseSchema][r4008] | R4008 | Add |
 | [requiredReadOnlySystemData][r4009] | R4009 | |
 | [requiredDefaultResponse][r4010] | R4010 | Add |
-| [DeleteOperationResponses][r4011] | R4011 | Done |
+| [DeleteOperationResponses][r4011] | R4011 | [az-delete-204-response](./azure-ruleset.md#az-delete-204-response) |
 | [XmsPageableMustHaveCorrespondingResponse][r4012] | R4012 | Add |
 | [IntegerTypeMustHaveFormat][r4013] | R4013 | Add |
 | [AllResourcesMustHaveGetOperation][r4014] | R4014 |  |
