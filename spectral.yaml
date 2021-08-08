@@ -4,7 +4,7 @@ functions:
   - check-version
   - error-response
   - param-names
-  - unique-ignore-case
+  - unique-param-names
 rules:
   info-contact: off
   no-$ref-siblings: off
@@ -151,6 +151,16 @@ rules:
     then:
       field: schema
       function: truthy
+
+  az-unique-parameter-names:
+    description: All parameter names for an operation should be case-insensitive unique.
+    message: "{{error}}"
+    given: $.paths[*]
+    severity: warn
+    formats: ["oas2"]
+    resolved: true
+    then:
+      function: unique-param-names
 
   az-version-convention:
     description: API version should be a date in YYYY-MM-DD format, optionally suffixed with '-preview'.

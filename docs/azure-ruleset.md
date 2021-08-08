@@ -67,6 +67,10 @@ All success responses except 202 & 204 should define a response body.
 
 Responses for status codes 202 and 204 should have no response body.
 
+### az-unique-param-names
+
+All parameter names for an operation -- including parameters defined at the path level -- should be case-insensitive unique.
+
 ### az-version-convention
 
 API version (`info.version`) should be a date in YYYY-MM-DD format, optionally suffixed with '-preview'.
