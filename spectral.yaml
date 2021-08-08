@@ -7,121 +7,12 @@ functions:
   - unique-ignore-case
 rules:
   info-contact: off
-  openapi-tags: off
-  operation-tag-defined: off
-  operation-description: off
-  operation-tags: off
   no-$ref-siblings: off
   oas2-unused-definition: off
-
-  # https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#172-casing
-  ms-property-names-convention:
-    description: Property names should be lower camel case.
-    message: Property name {{property}} should be lower camel case.
-    severity: warn
-    # This rule can report false positives if run on the resolved spec.
-    # Issue: https://github.com/stoplightio/spectral/issues/1316
-    resolved: false
-    given: $..[?(@.type === 'object' && @.properties)].properties.*~
-    then:
-      function: casing
-      functionOptions:
-        type: camel
-
-  # https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#172-casing
-  ms-parameter-names-convention:
-    description: Parameter names should conform to Azure naming conventions.
-    message: "{{error}}"
-    severity: warn
-    given:
-    - $.paths[*].parameters.*
-    - $.paths.*[?( @property === 'get' || @property === 'put' || @property === 'post' || @property === 'delete' || @property === 'options' || @property === 'head' || @property === 'patch' || @property === 'trace' )].parameters.*
-    then:
-      function: param-names
-
-  ms-schema-names-convention:
-    description: Schema names should be UpperCamelCase.
-    message: Schema name {{property}} should be upper camel case.
-    severity: warn
-    formats: ["oas2"]
-    given: $.definitions.*~
-    then:
-      function: casing
-      functionOptions:
-        type: pascal
-
-  # All success responses except 202 & 204 should define a response body
-  # ref: https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#1321-put
-  ms-success-response-body:
-    description: All success responses except 202 & 204 should define a response body.
-    given: $.paths[*][*].responses[?(@property >= 200 && @property < 300 && @property != '202' && @property != '204')]
-    severity: warn
-    formats: ["oas2"]
-    resolved: true
-    then:
-      field: schema
-      function: truthy
-
-  ms-success-response-nobody:
-    description: Responses for status codes 202 and 204 should have no response body.
-    given: $.paths[*][*].responses[?(@property == '202' || @property == '204')]
-    severity: warn
-    formats: ["oas2"]
-    resolved: true
-    then:
-      field: schema
-      function: falsy
-
-  ms-lro-headers:
-    description: A 202 response should include an Operation-Location response header.
-    given: $.paths[*][*].responses[?(@property == '202')]
-    severity: warn
-    formats: ["oas2"]
-    resolved: true
-    then:
-      field: headers.Operation-location
-      function: truthy
-
-  az-error-response:
-    description: Error response body should conform to Microsoft Azure API Guidelines.
-    message: "{{error}}"
-    given: $.paths[*][*].responses
-    severity: warn
-    formats: ["oas2"]
-    resolved: true
-    then:
-      function: error-response
-
-  az-version-policy:
-    description: Specify API version using `api-version` query parameter, not in path.
-    message: "{{error}}"
-    formats: ["oas2"]
-    given: $
-    severity: warn
-    then:
-      function: check-version
-
-  az-version-convention:
-    description: API version should be a date in YYYY-MM-DD format, optionally suffixed with '-preview'.
-    formats: ["oas2", "oas3"]
-    given: $.info.version
-    severity: error
-    then:
-      function: pattern
-      functionOptions:
-        match: "^\\d\\d\\d\\d-\\d\\d-\\d\\d(-preview)?$"
-
-  # Patch request body content type should be application/merge-patch+json
-  az-patch-content-type:
-    description: The request body content type for patch operations should be JSON merge patch.
-    formats: ["oas2"]
-    given: $.paths.*.patch.consumes[*]
-    severity: warn
-    then:
-      function: enumeration
-      functionOptions:
-        values:
-        - application/merge-patch+json
+  openapi-tags: off
+  operation-description: off
+  operation-tags: off
+  operation-tag-defined: off
 
   az-delete-204-response:
     description: A delete operation should have a 204 response
@@ -134,27 +25,24 @@ rules:
       field: '204'
       function: truthy
 
-  # YOU SHOULD limit your URLs characters to 0-9 A-Z a-z - . _ ~
-  ms-path-characters:
-    description: Path should contain only recommended characters.
-    message: Path contains non-recommended characters.
-    formats: ["oas2", "oas3"]
-    given: $.paths.*~
-    severity: hint
-    then:
-      function: pattern
-      functionOptions:
-        # Check each path segment individually and ignore param segments
-        match: "^(/([0-9A-Za-z._~-]*|{[^}]*}))*$"
-
-  property-descriptions:
-    description: All schema properties should have descriptions.
-    message: Property should have description
+  az-error-response:
+    description: Error response body should conform to Microsoft Azure API Guidelines.
+    message: "{{error}}"
+    given: $.paths[*][*].responses
     severity: warn
-    resolved: false
-    given: $..[?(@.type === 'object' && @.properties)].properties[*]
+    formats: ["oas2"]
+    resolved: true
     then:
-      field: description
+      function: error-response
+
+  az-lro-headers:
+    description: A 202 response should include an Operation-Location response header.
+    given: $.paths[*][*].responses[?(@property == '202')]
+    severity: warn
+    formats: ["oas2"]
+    resolved: true
+    then:
+      field: headers.Operation-location
       function: truthy
 
   az-operation-summary-or-description:
@@ -172,3 +60,105 @@ rules:
     - $.paths[*][?( @property === 'trace' && !@.summary && !@.description )]
     then:
       function: falsy
+
+  # https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#172-casing
+  az-parameter-names-convention:
+    description: Parameter names should conform to Azure naming conventions.
+    message: "{{error}}"
+    severity: warn
+    given:
+    - $.paths[*].parameters.*
+    - $.paths.*[?( @property === 'get' || @property === 'put' || @property === 'post' || @property === 'delete' || @property === 'options' || @property === 'head' || @property === 'patch' || @property === 'trace' )].parameters.*
+    then:
+      function: param-names
+
+  # Patch request body content type should be application/merge-patch+json
+  az-patch-content-type:
+    description: The request body content type for patch operations should be JSON merge patch.
+    formats: ["oas2"]
+    given: $.paths.*.patch.consumes[*]
+    severity: warn
+    then:
+      function: enumeration
+      functionOptions:
+        values:
+        - application/merge-patch+json
+
+  # DO limit your URLs characters to 0-9 A-Z a-z - . _ ~ :
+  az-path-characters:
+    description: Path should contain only recommended characters.
+    message: Path contains non-recommended characters.
+    formats: ["oas2", "oas3"]
+    given: $.paths.*~
+    severity: hint
+    then:
+      function: pattern
+      functionOptions:
+        # Check each path segment individually and ignore param segments
+        match: "^(/([0-9A-Za-z._~:-]*|{[^}]*}))*$"
+
+  az-property-descriptions:
+    description: All schema properties should have descriptions.
+    message: Property should have description
+    severity: warn
+    resolved: false
+    given: $..[?(@.type === 'object' && @.properties)].properties[*]
+    then:
+      field: description
+      function: truthy
+
+  # https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#172-casing
+  az-property-names-convention:
+    description: Property names should be lower camel case.
+    message: Property name {{property}} should be lower camel case.
+    severity: warn
+    # This rule can report false positives if run on the resolved spec.
+    # Issue: https://github.com/stoplightio/spectral/issues/1316
+    resolved: false
+    given: $..[?(@.type === 'object' && @.properties)].properties.*~
+    then:
+      function: casing
+      functionOptions:
+        type: camel
+
+  az-schema-names-convention:
+    description: Schema names should be UpperCamelCase.
+    message: Schema name {{property}} should be upper camel case.
+    severity: hint
+    formats: ["oas2"]
+    given: $.definitions.*~
+    then:
+      function: casing
+      functionOptions:
+        type: pascal
+
+  # All success responses except 202 & 204 should define a response body
+  # ref: https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#1321-put
+  az-success-response-body:
+    description: All success responses except 202 & 204 should define a response body.
+    given: $.paths[*][*].responses[?(@property >= 200 && @property < 300 && @property != '202' && @property != '204')]
+    severity: warn
+    formats: ["oas2"]
+    resolved: true
+    then:
+      field: schema
+      function: truthy
+
+  az-version-convention:
+    description: API version should be a date in YYYY-MM-DD format, optionally suffixed with '-preview'.
+    formats: ["oas2", "oas3"]
+    given: $.info.version
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "^\\d\\d\\d\\d-\\d\\d-\\d\\d(-preview)?$"
+
+  az-version-policy:
+    description: Specify API version using `api-version` query parameter, not in path.
+    message: "{{error}}"
+    formats: ["oas2"]
+    given: $
+    severity: warn
+    then:
+      function: check-version
