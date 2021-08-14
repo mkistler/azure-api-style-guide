@@ -17,10 +17,10 @@ rules:
   az-delete-204-response:
     description: A delete operation should have a 204 response.
     message: A delete operation should have a `204` response.
-    given: $.paths[*].delete.responses
     severity: warn
     formats: ["oas2"]
     resolved: true
+    given: $.paths[*].delete.responses
     then:
       field: '204'
       function: truthy
@@ -28,19 +28,19 @@ rules:
   az-error-response:
     description: Error response body should conform to Microsoft Azure API Guidelines.
     message: "{{error}}"
-    given: $.paths[*][*].responses
     severity: warn
     formats: ["oas2"]
     resolved: true
+    given: $.paths[*][*].responses
     then:
       function: error-response
 
   az-lro-headers:
     description: A 202 response should include an Operation-Location response header.
-    given: $.paths[*][*].responses[?(@property == '202')]
     severity: warn
     formats: ["oas2"]
     resolved: true
+    given: $.paths[*][*].responses[?(@property == '202')]
     then:
       field: headers.Operation-location
       function: truthy
@@ -74,9 +74,9 @@ rules:
   # Patch request body content type should be application/merge-patch+json
   az-patch-content-type:
     description: The request body content type for patch operations should be JSON merge patch.
+    severity: warn
     formats: ["oas2"]
     given: $.paths.*.patch.consumes[*]
-    severity: warn
     then:
       function: enumeration
       functionOptions:
@@ -87,9 +87,9 @@ rules:
   az-path-characters:
     description: Path should contain only recommended characters.
     message: Path contains non-recommended characters.
+    severity: hint
     formats: ["oas2", "oas3"]
     given: $.paths.*~
-    severity: hint
     then:
       function: pattern
       functionOptions:
@@ -156,10 +156,10 @@ rules:
   # ref: https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#1321-put
   az-success-response-body:
     description: All success responses except 202 & 204 should define a response body.
-    given: $.paths[*][*].responses[?(@property >= 200 && @property < 300 && @property != '202' && @property != '204')]
     severity: warn
     formats: ["oas2"]
     resolved: true
+    given: $.paths[*][*].responses[?(@property >= 200 && @property < 300 && @property != '202' && @property != '204')]
     then:
       field: schema
       function: truthy
@@ -167,18 +167,18 @@ rules:
   az-unique-parameter-names:
     description: All parameter names for an operation should be case-insensitive unique.
     message: "{{error}}"
-    given: $.paths[*]
     severity: warn
     formats: ["oas2"]
     resolved: true
+    given: $.paths[*]
     then:
       function: unique-param-names
 
   az-version-convention:
     description: API version should be a date in YYYY-MM-DD format, optionally suffixed with '-preview'.
+    severity: error
     formats: ["oas2", "oas3"]
     given: $.info.version
-    severity: error
     then:
       function: pattern
       functionOptions:
@@ -187,8 +187,8 @@ rules:
   az-version-policy:
     description: Specify API version using `api-version` query parameter, not in path.
     message: "{{error}}"
+    severity: warn
     formats: ["oas2"]
     given: $
-    severity: warn
     then:
       function: check-version
