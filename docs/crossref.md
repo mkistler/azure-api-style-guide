@@ -72,7 +72,7 @@
 | [EnumMustNotHaveEmptyValue][r3024] | R3024 | Add |
 | [PathResourceProviderMatchNamespace][r3030] | R3030  | |
 | [XmsPageableListByRGAndSubscriptions][r3060] | R3060 |  |
-| [ParameterDescriptionRequired][r4000] | R4000 | Add |
+| [ParameterDescriptionRequired][r4000] | R4000 | [az-parameter-description](./azure-ruleset.md#az-parameter-description) |
 | [XmsParameterLocation][r4001] | R4001 | Add |
 | [LocationMustHaveXmsMutability][r4002] | R4002 |  |
 | [OperationIdRequired][r4004] | R4004 | Add |

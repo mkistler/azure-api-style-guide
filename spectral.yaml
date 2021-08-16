@@ -71,6 +71,17 @@ rules:
     then:
       function: param-names
 
+  az-parameter-description:
+    description: All parameters should have a description.
+    message: Parameter should have a description.
+    severity: warn
+    given:
+    - $.paths[*].parameters.*
+    - $.paths.*[get,put,post,patch,delete,options,head].parameters.*
+    then:
+      field: description
+      function: truthy
+
   # Patch request body content type should be application/merge-patch+json
   az-patch-content-type:
     description: The request body content type for patch operations should be JSON merge patch.
@@ -98,7 +109,7 @@ rules:
 
   az-property-description:
     description: All schema properties should have a description.
-    message: Property should have description
+    message: Property should have a description.
     severity: warn
     resolved: false
     given: $..[?(@.type === 'object' && @.properties)].properties[*]

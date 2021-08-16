@@ -25,6 +25,10 @@ Operation should have a summary or description.
 
 See [azure-openapi-validator OperationDescriptionOrSummaryRequired](https://github.com/Azure/azure-openapi-validator/blob/master/src/dotnet/OpenAPI.Validator/Validation/OperationDescriptionOrSummaryRequired.cs)
 
+### az-parameter-description
+
+All parameters should have a description.
+
 ### az-parameter-names-convention
 
 Query parameter names should be lowerCamelCase; header parameter names should be kebab case.
