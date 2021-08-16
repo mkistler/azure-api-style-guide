@@ -37,17 +37,13 @@ The request body content type for patch operations should be JSON merge patch.
 
 Service-defined path segments should be restricted to 0-9 A-Z a-z - . _ ~, with : allowed only as described below to designate an action operation.
 
-### az-property-descriptions
+### az-property-description
 
-All schema properties should have descriptions.
+All schema properties should have a description.
 
 ### az-property-names-convention
 
 Property names should be lowerCamelCase.
-
-### az-patch-content-type
-
-The request body content type for patch operations should be JSON merge patch.
 
 ### az-request-body-not-allowed
 
@@ -65,11 +61,11 @@ See [azure-openapi-validator RequiredDefaultResponse](https://github.com/Azure/a
 
 ### az-schema-names-convention
 
-Schema names should be UpperCamelCase.
+Schema names should be Pascal case.
 
 ### az-success-response-body
 
-All success responses except 202 & 204 should define a response body.
+All success responses except 202 and 204 should define a response body.
 
 ### az-success-response-nobody
 
