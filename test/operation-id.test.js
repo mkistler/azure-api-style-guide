@@ -26,7 +26,7 @@ test('az-operation-id should find operationId not Noun_Verb', async () => {
     expect(results[0].path.join('.')).toBe('paths./api/test1.get.operationId');
     expect(results[1].path.join('.')).toBe('paths./api/test1.post.operationId');
     results.forEach((result) => expect(result.message).toContain(
-      'operationId should be of the form "Noun_Verb"',
+      'OperationId should be of the form "Noun_Verb"',
     ));
   });
 });
@@ -58,8 +58,55 @@ test('az-operation-id should find operationId without standard verb', async () =
     expect(results[2].path.join('.')).toBe('paths./api/test2.patch.operationId');
     expect(results[3].path.join('.')).toBe('paths./api/test2.delete.operationId');
     results.forEach((result) => expect(result.message).toMatch(
-      /Verb in operationId for (get|put|patch|delete) method should contain/,
+      /OperationId for (get|put|patch|delete) method should contain/,
     ));
+  });
+});
+
+test('az-operation-id should find operationId without standard verb', async () => {
+  const oasDoc = {
+    swagger: '2.0',
+    paths: {
+      '/api/test3': {
+        get: {
+          operationId: 'Noun_Get',
+          'x-ms-pageable': {
+            nextLinkName: 'nextLink',
+          },
+        },
+        put: {
+          operationId: 'Noun_Create',
+          responses: {
+            200: {
+              description: 'Success',
+            },
+            201: {
+              description: 'Created',
+            },
+          },
+        },
+        patch: {
+          operationId: 'Noun_Update',
+          responses: {
+            200: {
+              description: 'Success',
+            },
+            201: {
+              description: 'Created',
+            },
+          },
+        },
+      },
+    },
+  };
+  linter.run(oasDoc).then((results) => {
+    expect(results).toHaveLength(3);
+    expect(results[0].path.join('.')).toBe('paths./api/test3.get.operationId');
+    expect(results[0].message).toBe('OperationId for get method should contain "List"');
+    expect(results[1].path.join('.')).toBe('paths./api/test3.put.operationId');
+    expect(results[1].message).toBe('OperationId for put method should contain both "Create" and "Update"');
+    expect(results[2].path.join('.')).toBe('paths./api/test3.patch.operationId');
+    expect(results[2].message).toBe('OperationId for patch method should contain both "Create" and "Update"');
   });
 });
 
@@ -87,12 +134,31 @@ test('az-operation-id should find no errors', async () => {
       '/api/test4': {
         get: {
           operationId: 'Noun_List',
+          'x-ms-pageable': {
+            nextLinkName: 'nextLink',
+          },
         },
         put: {
           operationId: 'Noun_CreateOrUpdate',
+          responses: {
+            200: {
+              description: 'Success',
+            },
+            201: {
+              description: 'Created',
+            },
+          },
         },
         patch: {
           operationId: 'Noun_CreateOrUpdate',
+          responses: {
+            200: {
+              description: 'Success',
+            },
+            201: {
+              description: 'Created',
+            },
+          },
         },
       },
       '/api/test5': {

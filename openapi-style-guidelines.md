@@ -95,6 +95,8 @@ The `Verb` of the `operationId` should be or contain a specific value depending 
 | patch            | "Update"            | could be "CreateOrUpdate" |
 | delete           | "Delete"            | |
 
+Further, a put or patch that supports both create and update should have "Create" and "Update" in the verb.
+
 ### Request body
 
 A get or delete operation must not accept a request body/body parameter.

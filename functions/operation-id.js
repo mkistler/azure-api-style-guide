@@ -7,42 +7,61 @@
 // - delete operations should have "delete" in the "verb" component of the operationId [R1009]
 
 module.exports = (targetVal, _opts, paths) => {
-  // targetVal should be the operationId
-  if (targetVal === null || typeof targetVal !== 'string') {
+  // targetVal should be an operation
+  if (targetVal === null || typeof targetVal !== 'object') {
     return [];
   }
   const path = paths.target || paths.given;
 
   const errors = [];
 
-  const m = targetVal.match(/[A-Za-z0-9]+_([A-Za-z0-9]+)/);
+  if (!targetVal.operationId) {
+    // Missing operationId is caught elsewhere, so just return
+    return errors;
+  }
+
+  const m = targetVal.operationId.match(/[A-Za-z0-9]+_([A-Za-z0-9]+)/);
   if (!m) {
     errors.push({
-      message: 'operationId should be of the form "Noun_Verb"',
-      path,
+      message: 'OperationId should be of the form "Noun_Verb"',
+      path: [...path, 'operationId'],
     });
   }
 
-  const verb = m ? m[1] : targetVal;
-  const method = path[path.length - 2];
-  const patterns = {
-    get: /(get|list)/i,
-    put: /create/i,
-    patch: /update/i,
-    delete: /delete/i,
-  };
-  const frags = {
-    get: '"Get" or "list"',
-    put: '"Create"',
-    patch: '"Update"',
-    delete: '"Delete"',
-  };
+  const verb = m ? m[1] : targetVal.operationId;
+  const method = path[path.length - 1];
 
-  if (patterns[method] && !verb.match(patterns[method])) {
-    errors.push({
-      message: `Verb in operationId for ${method} method should contain ${frags[method]}`,
-      path,
-    });
+  const isCreateOrUpdate = ['put', 'patch'].includes(method)
+    && (targetVal.responses?.['200'] && targetVal.responses?.['201']);
+
+  if (isCreateOrUpdate) {
+    if (!verb.match(/create/i) || !verb.match(/update/i)) {
+      errors.push({
+        message: `OperationId for ${method} method should contain both "Create" and "Update"`,
+        path: [...path, 'operationId'],
+      });
+    }
+  } else {
+    const isList = method === 'get' && targetVal['x-ms-pageable'];
+    const patterns = {
+      get: isList ? /list/i : /(get|list)/i,
+      put: /create/i,
+      patch: /update/i,
+      delete: /delete/i,
+    };
+    const frags = {
+      get: isList ? '"List"' : '"Get" or "list"',
+      put: '"Create"',
+      patch: '"Update"',
+      delete: '"Delete"',
+    };
+
+    if (patterns[method] && !verb.match(patterns[method])) {
+      errors.push({
+        message: `OperationId for ${method} method should contain ${frags[method]}`,
+        path: [...path, 'operationId'],
+      });
+    }
   }
 
   return errors;
