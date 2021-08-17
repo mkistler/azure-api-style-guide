@@ -12,6 +12,7 @@
       ./node_modules/.bin/markdown-toc -i openapi-style-guidelines.md
   -->
 
+<!-- markdownlint-disable MD004 -->
 <!-- toc -->
 
 - [Introduction](#introduction)
@@ -37,6 +38,7 @@
   * [Format](#format-1)
 
 <!-- tocstop -->
+<!-- markdownlint-enable MD004 -->
 
 <!-- --------------------------------------------------------------- -->
 
@@ -80,10 +82,18 @@ about the operation behavior -- it should not simply restate the summary.
 
 Every operation should have a unique `operationId`.
 
-The operationId should be of the form `Noun_Verb`.  It should contain exactly one underscore.
+The `operationId` should be of the form `Noun_Verb`.  It should contain exactly one underscore.
 
 AutoRest breaks the operation id into its `Noun` and `Verb` where `Noun` becomes name of the operations class and the Verb becomes the name of the method in that class, i.e., operations are grouped inside the operations class named after the noun.
-Not adhering to this format can either cause AutoRest to fail or can generate semantically incorrect SDK.
+
+The `Verb` of the `operationId` should be or contain a specific value depending on the operation method:
+
+| operation method | verb should contain | notes  |
+| ---------------- | ------------------- | ------ |
+| get              | "Get" or "List"     | should be "List" if response is pageable |
+| put              | "Create"            | could be "CreateOrUpdate" |
+| patch            | "Update"            | could be "CreateOrUpdate" |
+| delete           | "Delete"            | |
 
 ### Request body
 

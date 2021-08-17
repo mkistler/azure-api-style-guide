@@ -19,6 +19,19 @@ Error response body should conform to Azure API Guidelines.
 
 A 202 response should include an Operation-Location response header.
 
+### az-operation-id
+
+The `operationId` should be of the form `Noun_Verb`.  It should contain exactly one underscore.
+
+The `Verb` of the `operationId` should be or contain a specific value depending on the operation method:
+
+| operation method | verb should contain | notes  |
+| ---------------- | ------------------- | ------ |
+| get              | "Get" or "List"     | should be "List" if response is pageable |
+| put              | "Create"            | could be "CreateOrUpdate" |
+| patch            | "Update"            | could be "CreateOrUpdate" |
+| delete           | "Delete"            | |
+
 ### az-operation-summary-or-description
 
 Operation should have a summary or description.

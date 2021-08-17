@@ -3,6 +3,7 @@ functionsDir: './functions'
 functions:
   - check-version
   - error-response
+  - operation-id
   - param-names
   - unique-param-names
 rules:
@@ -45,6 +46,15 @@ rules:
       field: headers.Operation-location
       function: truthy
 
+  az-operation-id:
+    description: OperationId should conform to Azure API Guidelines
+    message: '{{error}}'
+    severity: warn
+    given:
+    - $.paths.*[get,put,post,patch,delete,options,head].operationId
+    then:
+      function: operation-id
+  
   az-operation-summary-or-description:
     description: Operation should have a summary or description.
     message: Operation should have a summary or description.

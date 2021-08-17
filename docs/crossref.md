@@ -2,12 +2,12 @@
 
 | Rule Name | Rule ID | Azure Spectral Ruleset |
 | --------- | ------- | ---------------------- |
-| [OperationIdNounInVerb][r1001] | R1001 | Add |
-| [ListInOperationName][r1003] | R1003 | Add |
-| [GetInOperationName][r1005] | R1005 | Add |
-| [PutInOperationName][r1006] | R1006 | Add |
-| [PatchInOperationName][r1007] | R1007 | Add |
-| [DeleteInOperationName][r1009] | R1009 | Add |
+| [OperationIdNounInVerb][r1001] | R1001 | [az-operation-id](./azure-ruleset.md#az-operation-id) |
+| [ListInOperationName][r1003] | R1003 | [az-operation-id](./azure-ruleset.md#az-operation-id) |
+| [GetInOperationName][r1005] | R1005 | [az-operation-id](./azure-ruleset.md#az-operation-id) |
+| [PutInOperationName][r1006] | R1006 | [az-operation-id](./azure-ruleset.md#az-operation-id) |
+| [PatchInOperationName][r1007] | R1007 | [az-operation-id](./azure-ruleset.md#az-operation-id) |
+| [DeleteInOperationName][r1009] | R1009 | [az-operation-id](./azure-ruleset.md#az-operation-id) |
 | [AvoidMSDNReferences][r1010] | R1010 |  |
 | [HttpsSupportedScheme][r1011] | R1011 | Add |
 | [AvoidNestedProperties][r2001] | R2001 | Add |
@@ -75,7 +75,7 @@
 | [ParameterDescriptionRequired][r4000] | R4000 | [az-parameter-description](./azure-ruleset.md#az-parameter-description) |
 | [XmsParameterLocation][r4001] | R4001 | Add |
 | [LocationMustHaveXmsMutability][r4002] | R4002 |  |
-| [OperationIdRequired][r4004] | R4004 | Add |
+| [OperationIdRequired][r4004] | R4004 | spectral:oas operation-operationId |
 | [UniqueXmsEnumName][r4005] | R4005 | Add |
 | [DeprecatedXmsCodeGenerationSetting][r4006] | R4006 |  |
 | [DefaultErrorResponseSchema][r4007] | R4007 | Add |
