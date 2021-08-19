@@ -113,6 +113,18 @@ Responses for status codes 202 and 204 should have no response body.
 
 A delete operation should have a 204 response.
 
+### Support for pagination
+
+If the operation returns a list that is potentially large, it should support pagination.
+
+To support pagination:
+- The operation should have the `x-ms-pageable` annotation
+- The operation response should contain a top-level `value` property of type array and required
+- The operation response should contain a top-level `nextLink` property of type string and optional
+- If the operation has a `skip` parameter, it must be an integer and optional
+- If the operation has a `top` parameter, it must be an integer, optional, and have a documented default and maximum value
+- If the operation has a `maxpagesize` parameter, it must be an integer, optional, and have a documented default and maximum value
+
 ### Error response
 
 All operations should have a "default" (error) response.

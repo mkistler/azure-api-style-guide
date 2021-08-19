@@ -38,6 +38,10 @@ Operation should have a summary or description.
 
 See [azure-openapi-validator OperationDescriptionOrSummaryRequired](https://github.com/Azure/azure-openapi-validator/blob/master/src/dotnet/OpenAPI.Validator/Validation/OperationDescriptionOrSummaryRequired.cs)
 
+### az-pagination-response
+
+If the operation returns a list that is potentially large, it should [support pagination](../opeapi-style-guidelines.md#).
+
 ### az-parameter-description
 
 All parameters should have a description.

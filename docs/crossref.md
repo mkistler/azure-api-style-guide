@@ -34,7 +34,7 @@
 | [AvoidAnonymousTypes][r2026] | R2026 | Add |
 | [DefaultMustBeInEnum][r2027] | R2027 | Add |
 | [NonEmptyClientName][r2028] | R2028 |  |
-| [PageableOperation][r2029] | R2029 | Add |
+| [PageableOperation][r2029] | R2029 | [az-pagination-response](./azure-ruleset.md#az-pagination-response) |
 | [InvalidVerbUsed][r2044] | R2044 | Spectral:oas |
 | [NamePropertyDefinitionInParameter][r2047] | R2047 | Spectral:oas |
 | [SecurityDefinitionsStructure][r2054] | R2054 |  |
@@ -83,7 +83,7 @@
 | [requiredReadOnlySystemData][r4009] | R4009 | |
 | [requiredDefaultResponse][r4010] | R4010 | Add |
 | [DeleteOperationResponses][r4011] | R4011 | [az-delete-204-response](./azure-ruleset.md#az-delete-204-response) |
-| [XmsPageableMustHaveCorrespondingResponse][r4012] | R4012 | Add |
+| [XmsPageableMustHaveCorrespondingResponse][r4012] | R4012 | [az-pagination-response](./azure-ruleset.md#az-pagination-response) |
 | [IntegerTypeMustHaveFormat][r4013] | R4013 | Add |
 | [AllResourcesMustHaveGetOperation][r4014] | R4014 |  |
 | [NestedResourcesMustHaveListOperation][r4015] | R4015 |  |
