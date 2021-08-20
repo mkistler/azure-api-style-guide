@@ -102,6 +102,6 @@ API version (`info.version`) should be a date in YYYY-MM-DD format, optionally s
 
 ### az-version-policy
 
-API version should not be specified in path segment, and all operations should accept `api-version` query param with date value.
+API version should not be specified in path segment, and all operations should accept `api-version` query param with date value in YYYY-MM-DD format, optionally suffixed with '-preview'.
 
 [RFC7231]: https://tools.ietf.org/html/rfc7231

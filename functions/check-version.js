@@ -61,16 +61,16 @@ function validateVersionParam(param, path) {
       path,
     });
   }
-  if (param.default && !param.default.match(/^\d\d\d\d-\d\d-\d\d$/)) {
+  if (param.default && !param.default.match(/^\d\d\d\d-\d\d-\d\d(-preview)?$/)) {
     errors.push({
-      message: 'Default value for "api-version" should be a date in YYYY-MM-DD format.',
+      message: 'Default value for "api-version" should be a date in YYYY-MM-DD format, optionally suffixed with \'-preview\'.',
       path: [...path, 'default'],
     });
   }
   return errors;
 }
 
-// Verify that every operation defines a query param called `api_version`
+// Verify that every operation defines a query param called `api-version`
 function checkVersionParam(targetVal) {
   const { paths } = targetVal;
   const errors = [];
@@ -94,7 +94,7 @@ function checkVersionParam(targetVal) {
             errors.push(...validateVersionParam(versionParam, ['paths', path, method, 'parameters', index]));
           } else {
             errors.push({
-              message: 'Operation does not define an "api_version" query parameter.',
+              message: 'Operation does not define an "api-version" query parameter.',
               path: ['paths', path, method, 'parameters'],
             });
           }
