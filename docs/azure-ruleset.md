@@ -7,6 +7,10 @@ the [Azure OpenAPI Style Guidelines](./openapi-style-guidelines.md).
 
 ## Azure Custom Rules
 
+### az-default-response
+
+All operations should have a default (error) response.
+
 ### az-delete-204-response
 
 A delete operation should have a 204 response.
@@ -39,8 +43,6 @@ The `Verb` of the `operationId` should be or contain a specific value depending 
 ### az-operation-summary-or-description
 
 Operation should have a summary or description.
-
-See [azure-openapi-validator OperationDescriptionOrSummaryRequired](https://github.com/Azure/azure-openapi-validator/blob/master/src/dotnet/OpenAPI.Validator/Validation/OperationDescriptionOrSummaryRequired.cs)
 
 ### az-pagination-response
 
@@ -77,12 +79,6 @@ A get or delete operation must not accept a request body/body parameter.
 A requestBody/body parameter should only be specified for HTTP methods where
 the HTTP 1.1 specification [RFC7231][RFC7231] has explicitly defined semantics for request bodies.
 RFC7231 states that the payload for both get and delete "has no defined semantics".
-
-### az-default-response
-
-All operations should have a default (error) response.
-
-See [azure-openapi-validator RequiredDefaultResponse](https://github.com/Azure/azure-openapi-validator/blob/master/src/typescript/azure-openapi-validator/rules/RequiredDefaultResponse.ts)
 
 ### az-schema-names-convention
 

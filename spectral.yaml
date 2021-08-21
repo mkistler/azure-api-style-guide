@@ -176,8 +176,8 @@ rules:
       function: truthy
 
   az-schema-names-convention:
-    description: Schema names should be UpperCamelCase.
-    message: Schema name should be upper camel case.
+    description: Schema names should be Pascal case.
+    message: Schema name should be Pascal case.
     severity: hint
     formats: ["oas2"]
     given: $.definitions.*~
