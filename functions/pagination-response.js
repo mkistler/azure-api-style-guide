@@ -16,16 +16,16 @@ module.exports = (operation, _opts, paths) => {
     return [];
   }
 
-  // Find success response code -- could be "default"
+  // Find success response code
   const resp = Object.keys(operation.responses)
-    .find((code) => code.startsWith('2')) || 'default';
+    .find((code) => code.startsWith('2'));
 
   // No success response will be flagged elsewhere, just return
   if (!resp) {
     return [];
   }
 
-  // Get the schema of the success response or default when no success response
+  // Get the schema of the success response
   const responseSchema = operation.responses[resp].schema || {};
 
   const errors = [];
