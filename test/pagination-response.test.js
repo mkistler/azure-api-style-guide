@@ -223,7 +223,7 @@ test('az-pagination-response should find errors in nextLink property', async () 
   });
 });
 
-test('az-pagination-response should find no errors', async () => {
+test('az-pagination-response should find no errors', () => {
   const oasDoc = {
     swagger: '2.0',
     paths: {
@@ -328,7 +328,7 @@ test('az-pagination-response should find no errors', async () => {
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results.length).toBe(0);
   });
 });

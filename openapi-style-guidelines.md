@@ -131,6 +131,8 @@ All operations should have a "default" (error) response.
 
 Error response body should conform to Azure API Guidelines.
 
+All `4xx` and `5xx` responses should specify `x-ms-error-response: true` except for `404` response of HEAD operation.
+
 ### Response headers
 
 A 202 response should include an Operation-Location response header.

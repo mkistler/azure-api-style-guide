@@ -2,12 +2,11 @@
  * Custom function to verify that error response conforms to Microsoft Azure API Guidelines.
  *
  * Check that:
- * - Each operation has at least one error response (possibly "default")
- *   - 4xx or 5xx or default with x-ms-error-response: true
  * - For all error responses, validate that:
- *   - the response contains x-ms-error-response: true
- *   - the schema conforms to Microsoft guidelines
- *   - the headers contain an `x-ms-error` header definition
+ *   - the response contains a schema for the response body
+ *   - the response body schema conforms to Azure API guidelines
+ *   - the response headers contain an `x-ms-error` header definition
+ * - All 4xx or 5xx responses contain x-ms-error-response: true
  */
 
 function isArraySchema(schema) {
@@ -25,7 +24,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   // The error response MUST be a single JSON object.
   if (!errorResponseSchema.properties) {
     errors.push({
-      message: 'Error response schema must be an object.',
+      message: 'Error response schema must be an object schema.',
       path: pathToSchema,
     });
     return errors;
@@ -33,7 +32,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   // This object MUST have a name/value pair named "error." The value MUST be a JSON object.
   if (!errorResponseSchema.properties.error || !errorResponseSchema.properties.error.properties) {
     errors.push({
-      message: 'Error response schema contain an object property named `error`.',
+      message: 'Error response schema should contain an object property named `error`.',
       path: pathToSchema,
     });
     return errors;
@@ -96,14 +95,6 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
 function validateErrorResponse(errorResponse, responsePath) {
   const errors = [];
 
-  // The error response should contain x-ms-error-response: true
-  if (!errorResponse['x-ms-error-response']) {
-    errors.push({
-      message: 'Error response should contain x-ms-error-response.',
-      path: responsePath,
-    });
-  }
-
   // The error response schema should conform to Microsoft API Guidelines
   if (!errorResponse.schema) {
     errors.push({
@@ -127,22 +118,30 @@ function validateErrorResponse(errorResponse, responsePath) {
   return errors;
 }
 
-module.exports = function (responses, _opts, paths) {
+module.exports = function errorResponse(responses, _opts, paths) {
   const errors = [];
   const path = paths.target || paths.given;
-  const errorResponses = Object.keys(responses)
-    .filter((code) => code.match(/[45]\d\d/) || (code === 'default' && !!responses.default['x-ms-error-response'] === true));
-  if (errorResponses.length === 0) {
-    errors.push({
-      message: 'No error response defined for operation.',
-      path,
-    });
-  } else {
-    errorResponses.forEach((code) => {
-      errors.push(
-        ...validateErrorResponse(responses[code], [...path, code]),
-      );
-    });
+
+  // Note: az-default-response rule will flag missing default response
+  if (responses.default) {
+    errors.push(
+      ...validateErrorResponse(responses.default, [...path, 'default']),
+    );
   }
+
+  Object.keys(responses).filter((code) => code.match(/[45]\d\d/)).forEach((code) => {
+    errors.push(
+      ...validateErrorResponse(responses[code], [...path, code]),
+    );
+
+    // The error response should contain x-ms-error-response: true
+    if (!(responses[code]['x-ms-error-response'])) {
+      errors.push({
+        message: 'Error response should contain x-ms-error-response.',
+        path: [...path, code],
+      });
+    }
+  });
+
   return errors;
 };

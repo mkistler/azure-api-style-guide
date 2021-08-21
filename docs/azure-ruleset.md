@@ -15,6 +15,10 @@ A delete operation should have a 204 response.
 
 Error response body should conform to Azure API Guidelines.
 
+Every operation should have a default response with error response body.
+
+All `4xx` and `5xx` responses should specify `x-ms-error-response: true` except for `404` response of HEAD operation.
+
 ### az-lro-headers
 
 A 202 response should include an Operation-Location response header.
@@ -74,7 +78,7 @@ A requestBody/body parameter should only be specified for HTTP methods where
 the HTTP 1.1 specification [RFC7231][RFC7231] has explicitly defined semantics for request bodies.
 RFC7231 states that the payload for both get and delete "has no defined semantics".
 
-### az-required-default-response
+### az-default-response
 
 All operations should have a default (error) response.
 

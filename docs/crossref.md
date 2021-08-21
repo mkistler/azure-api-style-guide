@@ -30,7 +30,7 @@
 | [requiredPropertiesMissingInResourceModel][r2020] | R2020 |  |
 | [SummaryAndDescriptionMustNotBeSame][r2023] | R2023 | Add |
 | [AnonymousBodyParameter][r2024] | R2024 | Add |
-| [NextLinkPropertyMustExist][r2025] | R2025 | Add |
+| [NextLinkPropertyMustExist][r2025] | R2025 | [az-pagination-response](./azure-ruleset.md#az-pagination-response) |
 | [AvoidAnonymousTypes][r2026] | R2026 | Add |
 | [DefaultMustBeInEnum][r2027] | R2027 | Add |
 | [NonEmptyClientName][r2028] | R2028 |  |
@@ -38,7 +38,7 @@
 | [InvalidVerbUsed][r2044] | R2044 | Spectral:oas |
 | [NamePropertyDefinitionInParameter][r2047] | R2047 | Spectral:oas |
 | [SecurityDefinitionsStructure][r2054] | R2054 |  |
-| [OneUnderscoreInOperationId][r2055] | R2055 | Add |
+| [OneUnderscoreInOperationId][r2055] | R2055 | [az-operation-id](./azure-ruleset.md#az-operation-id) |
 | [requiredReadOnlyProperties][r2056] | R2056 | Add |
 | [InvalidSkuModel][r2057] | R2057 |  |
 | [XmsPathsMustOverloadPaths][r2058] | R2058 |  |
@@ -78,10 +78,10 @@
 | [OperationIdRequired][r4004] | R4004 | spectral:oas operation-operationId |
 | [UniqueXmsEnumName][r4005] | R4005 | Add |
 | [DeprecatedXmsCodeGenerationSetting][r4006] | R4006 |  |
-| [DefaultErrorResponseSchema][r4007] | R4007 | Add |
+| [DefaultErrorResponseSchema][r4007] | R4007 | [az-default-response](./azure-ruleset.md#az-default-response) |
 | [AvoidEmptyResponseSchema][r4008] | R4008 | Add |
 | [requiredReadOnlySystemData][r4009] | R4009 | |
-| [requiredDefaultResponse][r4010] | R4010 | Add |
+| [requiredDefaultResponse][r4010] | R4010 | [az-error-response](./azure-ruleset.md#az-error-response) |
 | [DeleteOperationResponses][r4011] | R4011 | [az-delete-204-response](./azure-ruleset.md#az-delete-204-response) |
 | [XmsPageableMustHaveCorrespondingResponse][r4012] | R4012 | [az-pagination-response](./azure-ruleset.md#az-pagination-response) |
 | [IntegerTypeMustHaveFormat][r4013] | R4013 | Add |
@@ -98,7 +98,7 @@
 | [ValidResponseCodeRequired][r4028] | R4028 | Add |
 | [UniqueClientParameterName][r4029] | R4029 |  |
 | [UniqueXmsExample][r4030] | R4030 |  |
-| [MissingXmsErrorResponse][r4032] | R4032 | Add |
+| [MissingXmsErrorResponse][r4032] | R4032 | [az-error-response](./azure-ruleset.md#az-error-response) |
 | [UniqueModelName][r4033] | R4033 | Add |
 | [AzureResourceTagsSchemaValidation][r4034] | R4034 |  |
 | [PrivateEndpointResourceSchemaValidation][r4035] | R4035 |  |

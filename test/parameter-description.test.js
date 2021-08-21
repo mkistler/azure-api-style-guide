@@ -7,7 +7,7 @@ beforeAll(async () => {
   return linter;
 });
 
-test('az-parameter-description should find errors', async () => {
+test('az-parameter-description should find errors', () => {
   // Test missing description in 3 different places:
   // 1. parameter at path level
   // 2. inline parameter at operation level
@@ -45,7 +45,7 @@ test('az-parameter-description should find errors', async () => {
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results.length).toBe(3);
     expect(results[0].path.join('.')).toBe('paths./api/Paths.parameters.0');
     expect(results[1].path.join('.')).toBe('paths./api/Paths.get.parameters.0');
@@ -53,7 +53,7 @@ test('az-parameter-description should find errors', async () => {
   });
 });
 
-test('az-parameter-description should find no errors', async () => {
+test('az-parameter-description should find no errors', () => {
   const oasDoc = {
     swagger: '2.0',
     paths: {
@@ -90,7 +90,7 @@ test('az-parameter-description should find no errors', async () => {
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results.length).toBe(0);
   });
 });

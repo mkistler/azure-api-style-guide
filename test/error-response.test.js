@@ -7,7 +7,7 @@ beforeAll(async () => {
   return linter;
 });
 
-test('az-error-response should find errors', async () => {
+test('az-error-response should find errors', () => {
   const oasDoc = {
     swagger: '2.0',
     paths: {
@@ -19,6 +19,17 @@ test('az-error-response should find errors', async () => {
             },
             400: {
               description: 'Bad request',
+              schema: {
+                type: 'string',
+              },
+            },
+            401: {
+              description: 'Unauthorized',
+              headers: {
+                'x-ms-error': {
+                  type: 'string',
+                },
+              },
               schema: {
                 properties: {
                   code: {
@@ -35,16 +46,20 @@ test('az-error-response should find errors', async () => {
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
-    expect(results.length).toBe(2);
+  return linter.run(oasDoc).then((results) => {
+    expect(results.length).toBe(4);
     expect(results[0].path.join('.')).toBe('paths./api/Paths.get.responses.400');
-    expect(results[0].message).toBe('Error response should contain x-ms-error-response.');
+    expect(results[0].message).toBe('Error response should contain a x-ms-error header.');
     expect(results[1].path.join('.')).toBe('paths./api/Paths.get.responses.400.schema');
-    expect(results[1].message).toBe('Error response schema contain an object property named `error`.');
+    expect(results[1].message).toBe('Error response schema must be an object schema.');
+    expect(results[2].path.join('.')).toBe('paths./api/Paths.get.responses.401');
+    expect(results[2].message).toBe('Error response should contain x-ms-error-response.');
+    expect(results[3].path.join('.')).toBe('paths./api/Paths.get.responses.401.schema');
+    expect(results[3].message).toBe('Error response schema should contain an object property named `error`.');
   });
 });
 
-test('az-error-response should find no errors', async () => {
+test('az-error-response should find no errors', () => {
   const oasDoc = {
     swagger: '2.0',
     paths: {
@@ -86,7 +101,7 @@ test('az-error-response should find no errors', async () => {
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results.length).toBe(0);
   });
 });

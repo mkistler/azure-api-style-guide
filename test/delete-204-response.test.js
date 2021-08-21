@@ -7,7 +7,7 @@ beforeAll(async () => {
   return linter;
 });
 
-test('az-delete-204-response should find errors', async () => {
+test('az-delete-204-response should find errors', () => {
   const myOpenApiDocument = {
     swagger: '2.0',
     paths: {
@@ -22,13 +22,13 @@ test('az-delete-204-response should find errors', async () => {
       },
     },
   };
-  linter.run(myOpenApiDocument).then((results) => {
+  return linter.run(myOpenApiDocument).then((results) => {
     expect(results.length).toBe(1);
     expect(results[0].path.join('.')).toBe('paths./api/Paths.delete.responses');
   });
 });
 
-test('az-delete-204-response should find no errors', async () => {
+test('az-delete-204-response should find no errors', () => {
   const myOpenApiDocument = {
     swagger: '2.0',
     paths: {
@@ -43,7 +43,7 @@ test('az-delete-204-response should find no errors', async () => {
       },
     },
   };
-  linter.run(myOpenApiDocument).then((results) => {
+  return linter.run(myOpenApiDocument).then((results) => {
     expect(results.length).toBe(0);
   });
 });

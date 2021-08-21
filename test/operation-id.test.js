@@ -110,7 +110,7 @@ test('az-operation-id should find operationId without standard verb', async () =
   });
 });
 
-test('az-operation-id should find no errors', async () => {
+test('az-operation-id should find no errors', () => {
   const oasDoc = {
     swagger: '2.0',
     paths: {
@@ -177,7 +177,7 @@ test('az-operation-id should find no errors', async () => {
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results.length).toBe(0);
   });
 });
