@@ -17,6 +17,11 @@ function isObjectSchema(schema) {
   return schema.type === 'object' || !!schema.properties;
 }
 
+function makePath(obj, path) {
+  const pathElem = path.shift();
+  return (pathElem in obj) ? [pathElem].concat(makePath(obj[pathElem], path)) : [];
+}
+
 // Validate that the schema conforms to Microsoft API Guidelines
 // https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses
 function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
@@ -33,35 +38,77 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   if (!errorResponseSchema.properties.error || !errorResponseSchema.properties.error.properties) {
     errors.push({
       message: 'Error response schema should contain an object property named `error`.',
-      path: pathToSchema,
+      path: [...pathToSchema, 'properties', ...makePath(errorResponseSchema.properties, ['error'])],
     });
     return errors;
   }
 
-  const errorSchema = errorResponseSchema.properties.error;
-  const errorSchemaRequired = Array.isArray(errorSchema.required) ? errorSchema.required : [];
+  // The `error` object should be required (always present)
 
-  if (!errorSchema.properties.code || !errorSchema.properties.code.type === 'string') {
+  if (!errorResponseSchema.required?.includes?.('error')) {
     errors.push({
-      message: 'Error schema should contain `code` field with type `string`.',
-      path: [...pathToSchema, 'properties', 'code'],
-    });
-  } else if (!errorSchemaRequired.includes('code')) {
-    errors.push({
-      message: 'The `code` property of the error schema should be required.',
-      path: [...pathToSchema, 'required'],
+      message: 'The `error` property in the error response schema should be required.',
+      path: [...pathToSchema, ...makePath(errorResponseSchema, ['required'])],
     });
   }
 
-  if (!errorSchema.properties.message || !errorSchema.properties.message.type === 'string') {
+  const errorSchema = errorResponseSchema.properties.error;
+  const pathToErrorSchema = [...pathToSchema, 'properties', 'error'];
+
+  // Spectral message dedup will drop all but first message with the same path, so we need
+  // combine messages when they would wind up with the same path.
+
+  const hasCode = !!errorSchema.properties.code;
+  const hasMessage = !!errorSchema.properties.code;
+
+  if (!hasCode && hasMessage) {
     errors.push({
-      message: 'Error schema should contain `message` field with type `string`.',
-      path: [...pathToSchema, 'properties', 'message'],
+      message: 'Error schema should contain `code` property.',
+      path: [...pathToErrorSchema, 'properties'],
     });
-  } else if (!errorSchemaRequired.includes('message')) {
+  } else if (hasCode && !hasMessage) {
     errors.push({
-      message: 'The `message` property of the error schema should be required.',
-      path: [...pathToSchema, 'required'],
+      message: 'Error schema should contain `message` property.',
+      path: [...pathToErrorSchema, 'properties'],
+    });
+  } else if (!hasCode && !hasMessage) {
+    errors.push({
+      message: 'Error schema should contain `code` and `message` properties.',
+      path: [...pathToErrorSchema, 'properties'],
+    });
+  }
+
+  if (hasCode && errorSchema.properties.code.type !== 'string') {
+    errors.push({
+      message: 'The `code` property of error schema should be type `string`.',
+      path: [...pathToErrorSchema, 'properties', 'code', ...makePath(errorSchema.properties.code, ['type'])],
+    });
+  }
+
+  if (hasMessage && errorSchema.properties.message.type !== 'string') {
+    errors.push({
+      message: 'The `message` property of error schema should be type `string`.',
+      path: [...pathToErrorSchema, 'properties', 'message', ...makePath(errorSchema.properties.message, ['type'])],
+    });
+  }
+
+  // Check if schema defines `code` and `message` as required
+
+  if (!['code', 'message'].every((prop) => errorSchema.required?.includes?.(prop))) {
+    // Either there is no required or it is missing both properties, so report both missing
+    errors.push({
+      message: 'Error schema should define `code` and `message` properties as required.',
+      path: [...pathToErrorSchema, ...makePath(errorSchema, ['required'])],
+    });
+  } else if (!errorSchema.required.includes('code')) {
+    errors.push({
+      message: 'Error schema should define `code` property as required.',
+      path: [...pathToErrorSchema, 'required'],
+    });
+  } else if (!errorSchema.required.includes('message')) {
+    errors.push({
+      message: 'Error schema should define `message` property as required.',
+      path: [...pathToErrorSchema, 'required'],
     });
   }
 
@@ -69,7 +116,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   if (!!errorSchema.properties.target && errorSchema.properties.target.type !== 'string') {
     errors.push({
       message: 'The `target` property of the error schema should be type `string`.',
-      path: [...pathToSchema, 'properties', 'target'],
+      path: [...pathToErrorSchema, 'properties', 'target'],
     });
   }
 
@@ -77,7 +124,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   if (!!errorSchema.properties.details && !isArraySchema(errorSchema.properties.details)) {
     errors.push({
       message: 'The `details` property of the error schema should be an array.',
-      path: [...pathToSchema, 'properties', 'details'],
+      path: [...pathToErrorSchema, 'properties', 'details'],
     });
   }
 
@@ -85,7 +132,7 @@ function validateErrorResponseSchema(errorResponseSchema, pathToSchema) {
   if (!!errorSchema.properties.innererror && !isObjectSchema(errorSchema.properties.innererror)) {
     errors.push({
       message: 'The `innererror` property of the error schema should be an object.',
-      path: [...pathToSchema, 'properties', 'innererror'],
+      path: [...pathToErrorSchema, 'properties', 'innererror'],
     });
   }
 

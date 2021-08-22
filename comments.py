@@ -15,46 +15,86 @@ comments = []
 
 default_response = [x for x in messages if x['code'] == 'az-default-response']
 if default_response:
+    text = 'All operations should have a default (error) response.'
+    if len(default_response) > 1:
+        text += f' There are {len(default_response)} operations missing a default response.' \
+            + ' Please fix all occurrences.'
     comments.append({
       'line': min_line(default_response),
-      'text': 'All operations should have a default (error) response. '
-        + f'There are {len(default_response)} operations missing a default response in this API. '
-        + 'Please fix all occurrences.'
+      'text': text
     })
+
+# az-error-response
+
+error_response = [x for x in messages if x['code'] == 'az-error-response']
+if error_response:
+    # Handle each unique message separately
+    msgs = { x['message'] for x in error_response }
+    for text in msgs:
+        occurrences = [x for x in error_response if x['message'] == text]
+        if len(occurrences) > 1:
+            text += f' There are {len(occurrences)} occurrences of this issue in the API. ' \
+                + ' Please fix all occurrences.'
+        comments.append({
+          'line': min_line(occurrences),
+          'text': text
+        })
+
+# az-pagination-response
+
+pagination_response = [x for x in messages if x['code'] == 'az-pagination-response']
+if pagination_response:
+    # Handle each unique message separately
+    msgs = { x['message'] for x in pagination_response }
+    for text in msgs:
+        occurrences = [x for x in pagination_response if x['message'] == text]
+        if len(occurrences) > 1:
+            text += f' There are {len(occurrences)} occurrences of this issue in the API. ' \
+                + ' Please fix all occurrences.'
+        comments.append({
+          'line': min_line(occurrences),
+          'text': text
+        })
 
 # az-parameter-description
 
 param_description = [x for x in messages if x['code'] == 'az-parameter-description']
 if param_description:
+    text = 'All parameters should have a description.'
+    if len(param_description) > 1:
+        text += f' There are {len(param_description)} parameters without descriptions in this API. ' \
+           + 'Please fix all occurrences.'
     comments.append({
       'line': min_line(param_description),
-      'text': 'All parameters should have a description. '
-        + f'There are {len(param_description)} parameters without descriptions in this API. '
-        + 'Please fix all occurrences.'
+      'text': text,
     })
 
 # az-property-description
 
 property_description = [x for x in messages if x['code'] == 'az-property-description']
 if property_description:
+    text = 'All properties should have a description.'
+    if len(property_description) > 1:
+        text += f' There are {len(property_description)} properties without descriptions in this API. ' \
+            + 'You should fix all occurrences of properties without a description.'
     comments.append({
       'line': min_line(property_description),
-      'text': 'All properties should have a description. '
-        + f'There are {len(property_description)} properties without descriptions in this API. '
-        + 'Please fix all occurrences.'
+      'text': text,
     })
 
-# Schema name should be Pascal case.
-# - Every one (will only be 1 per name)
-# - "Schema name should be Pascal case." + suggestion
+# az-schema-names-convention
 
-schema_names = [x for x in messages if x['code'] == 'az-schema-names']
+schema_names = [x for x in messages if x['code'] == 'az-schema-names-convention']
 for msg in schema_names:
     suggestion = 'TODO'
     comments.append({
       'line': msg['range']['start']['line'],
-      'text': 'Schema name should be Pascal case.\n'
-        + f'```Suggestion\n{suggestion}\n```'
+      'text': 'Schema names should be Pascal case.\n' \
+          + f'```Suggestion\n{suggestion}\n```'
     })
 
-print(json.dumps(comments, indent=4))
+comments.sort(key=lambda x: x['line'])
+for comment in comments:
+    line = comment['line']
+    text = comment['text']
+    print(f'line: {line}\ntext:\n{text}\n')
