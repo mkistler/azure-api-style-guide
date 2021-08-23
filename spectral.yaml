@@ -16,6 +16,15 @@ rules:
   operation-tags: off
   operation-tag-defined: off
 
+  az-default-response:
+    description: All operations should have a default (error) response.
+    message: Operation is missing a default response.
+    severity: warn
+    given: $.paths.*.*.responses
+    then:
+      field: default
+      function: truthy
+
   az-delete-204-response:
     description: A delete operation should have a 204 response.
     message: A delete operation should have a `204` response.
@@ -166,14 +175,14 @@ rules:
       functionOptions:
         notMatch: "/^body$/"
 
-  az-default-response:
-    description: All operations should have a default (error) response.
-    message: Operation is missing a default response.
+  az-schema-description-or-title:
+    description: All schemas should have a description or title.
+    message: Schema should have a description or title.
     severity: warn
-    given: $.paths.*.*.responses
+    given:
+    - $.definitions[?(!@.description && !@.title)]
     then:
-      field: default
-      function: truthy
+      function: falsy
 
   az-schema-names-convention:
     description: Schema names should be Pascal case.

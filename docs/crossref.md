@@ -92,7 +92,7 @@
 | [OperationsApiResponseSchema][r4018] | R4018 |  |
 | [GetCollectionResponseSchema][r4019] | R4019 | Add |
 | [DescriptiveDescriptionRequired][r4000-3] | R4000-3 | Add |
-| [DescriptionAndTitleMissing][r4000-4] | R4000-4 | Add |
+| [DescriptionAndTitleMissing][r4021] | R4021 | [az-schema-description-or-title](./azure-ruleset.md#az-schema-description-or-title) |
 | [OperationDescriptionOrSummaryRequired][r4000-5] | R4000-5 | Add |
 | [PreviewVersionOverOneYear][r4024] | R4024 |  |
 | [ValidResponseCodeRequired][r4028] | R4028 | Add |

@@ -173,6 +173,8 @@ Property names should be [camel case][wikipedia-camel-case].
 
 ### Descriptions
 
+Every schema should have a description or a title.
+
 Every schema property should have a description.
 
 ### Format
