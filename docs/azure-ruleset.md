@@ -60,6 +60,8 @@ Query parameter names should be lowerCamelCase; header parameter names should be
 
 The request body content type for patch operations should be JSON merge patch.
 
+Only patch operations should accept JSON merge patch.
+
 ### az-path-characters
 
 Service-defined path segments should be restricted to 0-9 A-Z a-z - . _ ~, with : allowed only as described below to designate an action operation.

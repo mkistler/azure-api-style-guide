@@ -105,6 +105,8 @@ A requestBody/body parameter should only be specified for HTTP methods where
 the HTTP 1.1 specification [RFC7231][RFC7231] has explicitly defined semantics for request bodies.
 RFC7231 states that the payload for both get and delete "has no defined semantics".
 
+The request body for a patch operation should be `application/merge-patch+json` content type.
+
 ### Response body
 
 All success responses except 202 and 204 should define a response body.

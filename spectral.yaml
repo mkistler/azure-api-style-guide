@@ -6,6 +6,7 @@ functions:
   - operation-id
   - pagination-response
   - param-names
+  - patch-content-type
   - unique-param-names
 rules:
   info-contact: off
@@ -117,14 +118,12 @@ rules:
   # Patch request body content type should be application/merge-patch+json
   az-patch-content-type:
     description: The request body content type for patch operations should be JSON merge patch.
+    message: "{{error}}"
     severity: warn
     formats: ["oas2"]
-    given: $.paths.*.patch.consumes[*]
+    given: $
     then:
-      function: enumeration
-      functionOptions:
-        values:
-        - application/merge-patch+json
+      function: patch-content-type
 
   # DO limit your URLs characters to 0-9 A-Z a-z - . _ ~ :
   az-path-characters:
