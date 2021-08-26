@@ -1,5 +1,0 @@
-extends:
-- spectral.yaml
-rules:
-  oas2-api-host: off
-  oas2-api-schemes: off
