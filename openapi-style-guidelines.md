@@ -72,6 +72,10 @@ API version should not be specified in path segment, and all operations should a
 Service-defined path segments should be restricted to `0-9 A-Z a-z - . _ ~`,
 with `:` allowed only to designate an action operation.
 
+### Method
+
+Use put or patch for create operations, rather than post, since post is not inherently idempotent.
+
 ### Summary and description
 
 Each operation should have a summary and/or description.
@@ -114,6 +118,10 @@ All success responses except 202 and 204 should define a response body.
 Responses for status codes 202 and 204 should have no response body.
 
 A delete operation should have a 204 response.
+
+For a path with a "create" operation (put or patch that returns 201),
+the 200 response of get, put, and patch, if present, should have the same response body schema
+as the create operation 201 response.
 
 ### Support for pagination
 

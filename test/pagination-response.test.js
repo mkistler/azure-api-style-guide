@@ -43,7 +43,7 @@ test('az-pagination-response should find missing x-ms-pageable extension', async
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results.length).toBe(2);
     expect(results[0].path.join('.')).toBe('paths./test1.get');
     expect(results[0].message).toBe('Operation might be pageable. Consider adding the x-ms-pageable extension.');
@@ -126,7 +126,7 @@ test('az-pagination-response should find errors in value property', async () => 
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results.length).toBe(3);
     expect(results[0].path.join('.')).toBe('paths./test2.get.responses.200.schema.properties.value.type');
     expect(results[0].message).toBe('`value` property in pageable response should be type: array');
@@ -212,7 +212,7 @@ test('az-pagination-response should find errors in nextLink property', async () 
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results.length).toBe(3);
     expect(results[0].path.join('.')).toBe('paths./test5.get.responses.200.schema.properties.nextLink.type');
     expect(results[0].message).toBe('`nextLink` property in pageable response should be type: string');

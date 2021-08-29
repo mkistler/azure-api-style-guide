@@ -2,6 +2,7 @@ extends: spectral:oas
 functionsDir: './functions'
 functions:
   - check-version
+  - consistent-response-body
   - error-response
   - operation-id
   - pagination-response
@@ -18,6 +19,15 @@ rules:
   operation-description: off
   operation-tags: off
   operation-tag-defined: off
+
+  az-consistent-response-body:
+    description: Ensure the get, put, and patch response body schemas are consistent.
+    message: '{{error}}'
+    severity: warn
+    formats: ['oas2']
+    given: $.paths.*
+    then:
+      function: consistent-response-body
 
   az-default-response:
     description: All operations should have a default (error) response.
@@ -138,6 +148,17 @@ rules:
         # Check each path segment individually and ignore param segments
         # Note: the ':' is only allowed in the final path segment
         match: "^(/([0-9A-Za-z._~-]+|{[^}]+}))*(/([0-9A-Za-z._~:-]+|{[^}]*}(:[0-9A-Za-z._~-]+)?))$"
+
+  az-post-201-response:
+    description: Using post for a create operation is discouraged.
+    message: Using post for a create operation is discouraged.
+    severity: warn
+    formats: ["oas2"]
+    resolved: true
+    given: $.paths[*].post.responses
+    then:
+      field: '201'
+      function: falsy
 
   az-property-description:
     description: All schema properties should have a description.

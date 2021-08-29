@@ -49,7 +49,7 @@
 | [LicenseHeaderMustNotBeSpecified][r2065] | R2065 |  |
 | [PostOperationIdContainsUrlVerb][r2066] | R2066 | Add |
 | [BodyTopLevelProperties][r3006] | R3006 | |
-| [PutGetPatchResponseSchema][r3007] | R3007 | Add |
+| [PutGetPatchResponseSchema][r3007] | R3007 | [az-consistent-response-body](./azure-ruleset.md#az-consistent-response-body) |
 | [CollectionObjectPropertiesNaming][r3008] | R3008 | Add |
 | [TrackedResourceListByImmediateParent][r3010] | R3010 |  |
 | [DescriptionMustNotBeNodeName][r3011] | R3011 | Add |

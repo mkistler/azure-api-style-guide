@@ -21,7 +21,7 @@ test('az-operation-id should find operationId not Noun_Verb', async () => {
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results).toHaveLength(2);
     expect(results[0].path.join('.')).toBe('paths./api/test1.get.operationId');
     expect(results[1].path.join('.')).toBe('paths./api/test1.post.operationId');
@@ -51,7 +51,7 @@ test('az-operation-id should find operationId without standard verb', async () =
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results).toHaveLength(4);
     expect(results[0].path.join('.')).toBe('paths./api/test2.get.operationId');
     expect(results[1].path.join('.')).toBe('paths./api/test2.put.operationId');
@@ -99,7 +99,7 @@ test('az-operation-id should find operationId without standard verb', async () =
       },
     },
   };
-  linter.run(oasDoc).then((results) => {
+  return linter.run(oasDoc).then((results) => {
     expect(results).toHaveLength(3);
     expect(results[0].path.join('.')).toBe('paths./api/test3.get.operationId');
     expect(results[0].message).toBe('OperationId for get method should contain "List"');

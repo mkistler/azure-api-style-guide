@@ -7,6 +7,12 @@ the [Azure OpenAPI Style Guidelines](./openapi-style-guidelines.md).
 
 ## Azure Custom Rules
 
+### az-consistent-response-body
+
+For a path with a "create" operation (put or patch that returns 201), the 200 response of
+get, put, and patch, if present, should have the same response body schema
+as the create operation 201 response.
+
 ### az-default-response
 
 All operations should have a default (error) response.
@@ -65,6 +71,10 @@ Only patch operations should accept JSON merge patch.
 ### az-path-characters
 
 Service-defined path segments should be restricted to 0-9 A-Z a-z - . _ ~, with : allowed only as described below to designate an action operation.
+
+### az-post-201-response
+
+Using post for a create operation is discouraged.  Use put or patch instead.
 
 ### az-property-description
 
