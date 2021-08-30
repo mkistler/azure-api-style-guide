@@ -145,7 +145,9 @@ All `4xx` and `5xx` responses should specify `x-ms-error-response: true` except 
 
 ### Response headers
 
-A 202 response should include an Operation-Location response header.
+A 202 response should include an `Operation-Location` response header.
+
+Error response should contain a `x-ms-error-code` response header.
 
 <!-- --------------------------------------------------------------- -->
 

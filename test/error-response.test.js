@@ -26,7 +26,7 @@ test('az-error-response should find errors', () => {
             401: {
               description: 'Unauthorized',
               headers: {
-                'x-ms-error': {
+                'x-ms-error-code': {
                   type: 'string',
                 },
               },
@@ -44,7 +44,7 @@ test('az-error-response should find errors', () => {
             403: {
               description: 'Forbidden',
               headers: {
-                'x-ms-error': {
+                'x-ms-error-code': {
                   type: 'string',
                 },
               },
@@ -73,7 +73,7 @@ test('az-error-response should find errors', () => {
   return linter.run(oasDoc).then((results) => {
     expect(results.length).toBe(6);
     expect(results[0].path.join('.')).toBe('paths./api/Paths.get.responses.400');
-    expect(results[0].message).toBe('Error response should contain a x-ms-error header.');
+    expect(results[0].message).toBe('Error response should contain a x-ms-error-code header.');
     expect(results[1].path.join('.')).toBe('paths./api/Paths.get.responses.400.schema');
     expect(results[1].message).toBe('Error response schema must be an object schema.');
     expect(results[2].path.join('.')).toBe('paths./api/Paths.get.responses.401');
@@ -100,7 +100,7 @@ test('az-error-response should find no errors', () => {
             400: {
               description: 'Bad request',
               headers: {
-                'x-ms-error': {
+                'x-ms-error-code': {
                   type: 'string',
                 },
               },

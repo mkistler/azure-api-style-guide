@@ -5,7 +5,7 @@
  * - For all error responses, validate that:
  *   - the response contains a schema for the response body
  *   - the response body schema conforms to Azure API guidelines
- *   - the response headers contain an `x-ms-error` header definition
+ *   - the response headers contain an `x-ms-error-code` header definition
  * - All 4xx or 5xx responses contain x-ms-error-response: true
  */
 
@@ -154,10 +154,10 @@ function validateErrorResponse(errorResponse, responsePath) {
     );
   }
 
-  // The error response should contain a x-ms-error header
-  if (!errorResponse.headers || !errorResponse.headers['x-ms-error']) {
+  // The error response should contain a x-ms-error-code header
+  if (!errorResponse.headers || !errorResponse.headers['x-ms-error-code']) {
     errors.push({
-      message: 'Error response should contain a x-ms-error header.',
+      message: 'Error response should contain a x-ms-error-code header.',
       path: !errorResponse.headers ? responsePath : [...responsePath, 'headers'],
     });
   }
