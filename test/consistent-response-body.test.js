@@ -22,7 +22,7 @@ test('az-consistent-response-body should find errors', async () => {
             201: {
               description: 'Created',
               schema: {
-                '$ref': '#/definitions/This'
+                $ref: '#/definitions/This',
               },
             },
           },
@@ -94,7 +94,7 @@ test('az-consistent-response-body should find no errors', () => {
             201: {
               description: 'Created',
               schema: {
-                '$ref': '#/definitions/This'
+                $ref: '#/definitions/This',
               },
             },
           },

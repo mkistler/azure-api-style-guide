@@ -102,7 +102,7 @@ test('az-operation-id should find operationId without standard verb', async () =
   return linter.run(oasDoc).then((results) => {
     expect(results).toHaveLength(3);
     expect(results[0].path.join('.')).toBe('paths./api/test3.get.operationId');
-    expect(results[0].message).toBe('OperationId for get method should contain "List"');
+    expect(results[0].message).toBe('OperationId for get method on a collection should contain "List"');
     expect(results[1].path.join('.')).toBe('paths./api/test3.put.operationId');
     expect(results[1].message).toBe('OperationId for put method should contain both "Create" and "Update"');
     expect(results[2].path.join('.')).toBe('paths./api/test3.patch.operationId');

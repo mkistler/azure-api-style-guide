@@ -57,10 +57,18 @@ module.exports = (targetVal, _opts, paths) => {
     };
 
     if (patterns[method] && !verb.match(patterns[method])) {
-      errors.push({
-        message: `OperationId for ${method} method should contain ${frags[method]}`,
-        path: [...path, 'operationId'],
-      });
+      // Customize message for list operation
+      if (isList) {
+        errors.push({
+          message: 'OperationId for get method on a collection should contain "List"',
+          path: [...path, 'operationId'],
+        });
+      } else {
+        errors.push({
+          message: `OperationId for ${method} method should contain ${frags[method]}`,
+          path: [...path, 'operationId'],
+        });
+      }
     }
   }
 
