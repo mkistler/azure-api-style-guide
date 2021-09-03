@@ -12,11 +12,15 @@
   "author": "Mike Kistler",
   "license": "MIT",
   "devDependencies": {
+    "@stoplight/spectral-core": "^1.4.0",
+    "@stoplight/spectral-ruleset-migrator": "^1.4.2",
     "eslint": "^7.30.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
     "jest": "^27.0.6",
-    "markdown-toc": "^1.2.0",
-    "@stoplight/spectral-core": "^1.4.0"
+    "markdown-toc": "^1.2.0"
+  },
+  "dependencies": {
+    "@stoplight/spectral-rulesets": "^1.2.4"
   }
 }
