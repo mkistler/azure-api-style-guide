@@ -96,6 +96,11 @@ A requestBody/body parameter should only be specified for HTTP methods where
 the HTTP 1.1 specification [RFC7231][RFC7231] has explicitly defined semantics for request bodies.
 RFC7231 states that the payload for both get and delete "has no defined semantics".
 
+### az-request-body-type
+
+A JSON request body should be structured as an object rather than an array to allow
+for future extensibility. Pass an array as named property of the request body.
+
 ### az-schema-description-or-title
 
 All schemas should have a description or title.

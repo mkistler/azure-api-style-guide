@@ -207,6 +207,19 @@ rules:
       functionOptions:
         notMatch: "/^body$/"
 
+  az-request-body-type:
+    description: Request body should be type object.
+    severity: warn
+    formats: ['oas3']
+    given:
+      - $.paths.*.[put,patch,post].requestBody.content.application/json.schema
+    then:
+      field: type
+      function: enumeration
+      functionOptions:
+        values:
+          - object
+
   az-schema-description-or-title:
     description: All schemas should have a description or title.
     message: Schema should have a description or title.
