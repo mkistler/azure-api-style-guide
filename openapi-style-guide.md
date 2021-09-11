@@ -44,37 +44,22 @@
 
 ## Introduction
 
-The following are guidelines for writing API descriptions for Azure using OpenAPI.
-Of course, all OpenAPI documents should conform to the [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md).
-
-In addition, Azure services should adhere to the [Microsoft Azure HTTP/REST API Guidelines](https://github.com/microsoft/api-guidelines/blob/azureRestUpdates/azure/Guidelines.md).
-
-The guidelines in this document extend and/or clarify the OpenAPI specification and Azure API Guidelines
-to address aspects of API description related to the generation of client libraries
-suitable for distribution in a Software Development Kit (SDK).
+This document contains guidelines that complement and extend the
+[OpenAPI 2.0 specification](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md) and
+[Microsoft Azure REST API Guidelines](https://github.com/microsoft/api-guidelines/blob/vNext/azure/Guidelines.md) for describing an Azure API with an OpenAPI 2.0 API definition.
+The goal of these guidelines is to establish the requirements for complete and consistent API definitions
+that will ensure high quality in generated documentation and client libraries.
 
 ## Versioning
 
 ### Version of API definition
 
-The API version (`info.version`) should be a date in YYYY-MM-DD format, optionally suffixed with '-preview'.
-
-### Version parameter
-
-API version should not be specified in path segment, and all operations should accept `api-version` query param with date value in YYYY-MM-DD format, optionally suffixed with '-preview'.
+The API version (`info.version`) should specify the current version of the API.
+For services that use date-based versions, this should be a date in YYYY-MM-DD format, optionally suffixed with '-preview'.
 
 <!-- --------------------------------------------------------------- -->
 
 ## Operations
-
-### Path
-
-Service-defined path segments should be restricted to `0-9 A-Z a-z - . _ ~`,
-with `:` allowed only to designate an action operation.
-
-### Method
-
-Use put or patch for create operations, rather than post, since post is not inherently idempotent.
 
 ### Summary and description
 
@@ -103,12 +88,6 @@ Further, a put or patch that supports both create and update should have "Create
 
 ### Request body
 
-A get or delete operation must not accept a request body/body parameter.
-
-A requestBody/body parameter should only be specified for HTTP methods where
-the HTTP 1.1 specification [RFC7231][RFC7231] has explicitly defined semantics for request bodies.
-RFC7231 states that the payload for both get and delete "has no defined semantics".
-
 The request body for a patch operation should be `application/merge-patch+json` content type.
 
 ### Response body
@@ -125,8 +104,6 @@ as the create operation 201 response.
 
 ### Support for pagination
 
-If the operation returns a list that is potentially large, it should support pagination.
-
 To support pagination:
 - The operation should have the `x-ms-pageable` annotation
 - The operation response should contain a top-level `value` property of type array and required
@@ -137,25 +114,52 @@ To support pagination:
 
 ### Error response
 
-All operations should have a "default" (error) response.
-
-Error response body should conform to Azure API Guidelines.
+All operations should have a "default" (error) response with a response body that conforms to the Azure API Guidelines.
 
 All `4xx` and `5xx` responses should specify `x-ms-error-response: true` except for `404` response of HEAD operation.
 
+Every error response should include the `x-ms-error-code` response header in the `headers` of the response.
+
+Example:
+```
+      "400": {
+        "description": "Bad Request",
+        "headers": {
+          "x-ms-error-code": {
+            "type": "string",
+            "description": "The error code."
+          }
+        },
+        "schema": {
+          "$ref": "#/definitions/ErrorResponse"
+        },
+        "x-ms-error-response": true
+      },
+```
+
 ### Response headers
 
-A 202 response should include an `Operation-Location` response header.
+A 202 response should include the `Operation-Location` response header in the `headers` of the response.
 
-Error response should contain a `x-ms-error-code` response header.
+Example:
+```
+    "responses": {
+      "202": {
+        "description": "The service has accepted the request and will start processing later.",
+        "headers": {
+          "Operation-Location": {
+            "description": "URL to query for status of the operation.",
+            "type": "string"
+          }
+        }
+      },
+```
 
 <!-- --------------------------------------------------------------- -->
 
 ## Parameters
 
 ### Parameter names
-
-Path and query parameter names should be [camel case][wikipedia-camel-case]; header parameter names should be [kebab case][wikipedia-kebab-case].
 
 All parameter names for an operation -- including parameters defined at the path level -- should be case-insensitive unique.
 
@@ -183,10 +187,6 @@ OpenAPI uses JSON Schema as the means for describing request and response body p
 
 Schema names should be [Pascal case][wikipedia-camel-case].
 
-### Property names
-
-Property names should be [camel case][wikipedia-camel-case].
-
 ### Descriptions
 
 Every schema should have a description or a title.
@@ -195,9 +195,9 @@ Every schema property should have a description.
 
 ### Format
 
-Integer properties must specify a format of either int32 and int64.
+Integer properties must specify a format of either `int32` and `int64`.
 
-Format must be one of the values defined by OpenAPI and recognized by the Azure tooling.
+Format must be one of the values [defined by OpenAPI][openapi-data-types] and recognized by the Azure tooling.
 
 <!-- Links -->
 
