@@ -160,6 +160,13 @@ All parameter names for an operation -- including parameters defined at the path
 
 Path parameters must be in the same order as in the path.
 
+### az-parameter-type-and-format
+
+Every parameter should specify a well-defined combination of `type` and `format`.
+
+See the [az-schema-type-and-format](#az-schema-type-and-format) for a detailed description of
+the well-defined combinations of `type` and `format`.
+
 ### az-patch-content-type
 
 The request body content type for patch operations should be JSON merge patch.
